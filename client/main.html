@@ -1,0 +1,14 @@
+<head>
+  <title>codemo</title>
+</head>
+
+<body>
+  <h1>Codemo</h1>
+  {{> main}}
+</body>
+
+<template name="main">
+  <div class="editor"><pre id='archy'></pre></div>
+  <button id="load-folder">Select Folder</button>
+  <div>{{> React component=TreeView data=tree }}</div>
+</template>
