@@ -1,20 +1,5 @@
 /* CSS declarations go here */
-
-.editor {
-  width: 100%;
-}
-
-.editor pre {
-  width: 100%;
-  height: 400px;
-}
-
-label {
-   pointer: cursor;
-}
-
-#open-folder {
-   opacity: 0;
-   position: absolute;
-   z-index: -1;
-}
+ body, html {
+   margin: 0;
+   padding: 0;
+ }

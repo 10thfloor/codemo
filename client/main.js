@@ -1,78 +1,51 @@
-import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
+import { Meteor } from 'meteor/meteor';
 
-import React from 'react';
-import { Treebeard } from 'react-treebeard';
-import { AceEditor } from 'meteor/arch:ace-editor';
+import React, { Component } from 'react';
+import { setDefaults } from 'react-komposer';
 
-import './main.html';
+import { Provider } from 'react-redux'
+import { createStore, combineReducers } from 'redux'
 
-const EditorContent = new Mongo.Collection('editorcontent');
-const sub = Meteor.subscribe('editorcontent');
+import { BrowserRouter, Match, Miss, Link } from 'react-router'
+import { render } from 'react-dom';
 
-Template.main.onCreated(function helloOnCreated() {
+import FileTree from './filetree';
+import Editor from './editor';
 
-  this.files = new ReactiveVar({});
 
-  this.autorun((e) => {
-    if (sub.ready()) {
-      e.stop();
-      const content = EditorContent.findOne();
-      this.editor = AceEditor.instance("archy", {
-        theme: 'dawn',
-        mode: content.mode
-      }, function (editor) {
-        editor.insert(content.text);
-      });
+import editorActions from '../client/editor/editorActions'
+
+ let store = createStore(
+   combineReducers({
+     editor: editorActions
+   })
+ )
+
+ setDefaults({
+    env: {
+      store
     }
-  });
 });
 
-class TreeView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.onToggle = this.onToggle.bind(this);
-  }
-  onToggle(node, toggled) {
-    node.active = true;
-    if (this.state.cursor) { this.state.cursor.active = false; }
-    if (node.children) { node.toggled = toggled; }
-    this.setState({ cursor: node });
-  }
-  componentDidUpdate() {
-    if(this.state.cursor.ext) {
-      console.log(this.state.cursor)
-    }
+class AppComponent extends Component {
+  componentWillMount() {
+
   }
   render() {
     return (
-      <Treebeard
-        onToggle={this.onToggle}
-        data={this.props.data}
-        />
+      <Provider store={store}>
+        <BrowserRouter>
+          <div>
+            <Match exactly pattern="/" component={Editor} />
+            <Match exactly pattern="/" component={FileTree} />
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
 
-Template.main.helpers({
-  tree() {
-    return Template.instance().files.get();
-  },
-  TreeView() {
-    return TreeView;
-  }
-});
 
-Template.main.events({
-  'click #load-folder'(event, instance) {
-    if (Meteor.isDesktop) {
-      Desktop.fetch('main', 'loadFolder', 1000000).then((files) => {
-        instance.files.set(files);
-      }, (error) => {
-        console.log('timeout', error);
-        // TODO: close dialog and show error if timeout
-      });
-    }
-  }
+Meteor.startup(() => {
+  render(<AppComponent />, document.getElementById('react-app'))
 });

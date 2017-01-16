@@ -38,6 +38,8 @@ export default class Desktop {
 
         process.on('uncaughtException', Desktop.uncaughtExceptionHandler);
 
+        process.test = 'test'
+
         // Chrome problems should also be handled. The `windowCreated` event has a `window`
         // reference. This is the reference to the current Electron renderer process (Chrome)
         // displaying your Meteor app.

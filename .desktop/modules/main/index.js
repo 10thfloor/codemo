@@ -3,7 +3,7 @@ import moduleJson from './module.json';
 import { app, dialog } from 'electron';
 
 const dirTree = require('directory-tree');
-
+const fs = require('fs');
 /**
  * Example module.
  *
@@ -53,6 +53,11 @@ export default class Example {
 
     module.on('loadFolder', (event, fetchId, testArg) => {
       this.showFilePicker(fetchId);
+    });
+
+    module.on('loadFile', (event, fetchId, testArg) => {
+      const fileContent = fs.readFileSync(testArg, { encoding: 'utf8' });
+      this.module.respond('loadFile', fetchId, fileContent);
     });
   }
 

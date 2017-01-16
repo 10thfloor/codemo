@@ -1,7 +1,7 @@
 {
-    "name": "My Meteor App",
+    "name": "Codemo",
     "version": "0.0.1",
-    "projectName": "MyMeteorApp",
+    "projectName": "Codemo",
     "devTools": true,
     "devtron": true,
     "desktopHCP": true,
