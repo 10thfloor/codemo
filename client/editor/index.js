@@ -33,8 +33,9 @@ class EditorComponent extends React.Component {
     }
 
     if (this.state.editorLoaded && nextProps.editorContent != this.props.editorContent) {
-        this.editor.getModel().setValue(nextProps.editorContent);
-        this.editor.getModel().setMode(nextProps.editorMode);
+        this.editor.setModel(
+          monaco.editor.createModel(nextProps.editorContent, nextProps.editorMode)
+        )
     }
   }
 
@@ -43,7 +44,6 @@ class EditorComponent extends React.Component {
   }
 
   initMonaco() {
-
     this.editor = monaco.editor.create(document.getElementById('monaco_container'), {
       value: this.props.editorContent,
       language: this.props.editorMode,
@@ -66,8 +66,8 @@ class EditorComponent extends React.Component {
     return (
       <div
         style={{ width: '100vw', height: '500px' }}
-        id="monaco_container"
-        ></div>
+        id="monaco_container">
+      </div>
     );
   }
 }
