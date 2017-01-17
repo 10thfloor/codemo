@@ -1,12 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { Component } from 'react';
-import { setDefaults } from 'react-komposer';
 
 import { Provider } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 
-import { BrowserRouter, Match, Miss, Link } from 'react-router'
+import { BrowserRouter, Match, Miss } from 'react-router'
 import { render } from 'react-dom';
 
 import FileTree from './filetree';

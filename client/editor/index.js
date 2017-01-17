@@ -46,11 +46,13 @@ class EditorComponent extends React.Component {
   }
 
   initMonaco() {
+
     this.editor = monaco.editor.create(document.getElementById('monaco_container'), {
       value: this.props.editorContent,
       language: this.props.editorMode,
       theme: 'vs-dark',
     });
+
     this.editor.onDidChangeModelContent((e) => {
 
     });

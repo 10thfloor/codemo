@@ -40,8 +40,7 @@ class FileTreeComponent extends Component {
   loadFile(filePath, fileExtension) {
      Desktop.fetch('main', 'loadFile', 1000000, filePath).then((fileContent) => {
 
-        const content = EditorContent.findOne();
-        Meteor.call('editor::setContent', content._id, fileContent, fileExtension);
+        Meteor.call('editor::setContent', fileContent, fileExtension);
 
       }, (error) => {
         console.log('timeout', error);

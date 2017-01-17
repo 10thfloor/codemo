@@ -28,8 +28,9 @@ Meteor.publish('editorcontent', function() {
 });
 
 Meteor.methods({
-  ['editor::setContent'](_id, fileContent, fileExtension) {
-    EditorContent.upsert(_id, {
+  ['editor::setContent'](fileContent, fileExtension) {
+    const content = EditorContent.findOne();
+    EditorContent.upsert(content._id, {
       text: fileContent,
       mode: fileExtensionMap(fileExtension)
     })
