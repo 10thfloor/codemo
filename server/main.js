@@ -6,7 +6,8 @@ import { EditorContent } from '../imports/collections'
 const  extMap = {
   '.json' : 'json',
   '.html' : 'html',
-  '.js' : 'javascript'
+  '.js' : 'javascript',
+  '.css': 'css'
 }
 
 function fileExtensionMap(ext) {
