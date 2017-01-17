@@ -33,11 +33,8 @@ class EditorComponent extends React.Component {
     }
 
     if (this.state.editorLoaded && nextProps.editorContent != this.props.editorContent) {
-
         this.editor.getModel().setValue(nextProps.editorContent);
         this.editor.getModel().setMode(nextProps.editorMode);
-        monaco.editor.colorize(nextProps.editorContent, nextProps.editorMode)
-        monaco.editor.setModelMarkers(this.editor.getModel(), '', [])
     }
   }
 
