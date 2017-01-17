@@ -17,25 +17,15 @@ class EditorComponent extends React.Component {
     }
   }
 
-  componentDidMount() {
-    let sub = Meteor.subscribe('editorcontent');
-    Tracker.autorun((c) => {
-      if (sub.ready()) {
-        let content = EditorContent.findOne()
-        this.props.setEditorContent({ editorContent: content.text, editorMode: content.mode })
-      }
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!this.state.editorLoaded && nextProps.editor) {
       this.initMonaco();
     }
 
     if (this.state.editorLoaded && nextProps.editorContent != this.props.editorContent) {
-        this.editor.setModel(
-          monaco.editor.createModel(nextProps.editorContent, nextProps.editorMode)
-        )
+      this.editor.setModel(
+        monaco.editor.createModel(nextProps.editorContent, nextProps.editorMode)
+      )
     }
   }
 
@@ -65,7 +55,7 @@ class EditorComponent extends React.Component {
   render() {
     return (
       <div
-        style={{ width: '100vw', height: '500px' }}
+        style={{ height: '500px' }}
         id="monaco_container">
       </div>
     );
@@ -74,13 +64,15 @@ class EditorComponent extends React.Component {
 
 function editorContainer(props, onData) {
 
+  let sub = Meteor.subscribe('editorcontent');
+
   if (!window.monaco) {
 
     // workaround monaco-css not understanding the environment
     window.module = undefined;
 
-		// workaround monaco-typescript not understanding the environment
-		window.process.browser = true;
+    // workaround monaco-typescript not understanding the environment
+    window.process.browser = true;
 
     window.require.config({
       paths: {
@@ -99,6 +91,13 @@ function editorContainer(props, onData) {
       }
     }, 500);
   }
+
+  Tracker.autorun((c) => {
+    if (sub.ready()) {
+      let content = EditorContent.findOne()
+      props.setEditorContent({ editorContent: content.text, editorMode: content.mode })
+    }
+  });
 }
 
 const mapStateToProps = (state) => {
