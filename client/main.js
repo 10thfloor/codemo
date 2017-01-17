@@ -21,12 +21,6 @@ import editorActions from '../client/editor/editorActions'
    })
  )
 
- setDefaults({
-    env: {
-      store
-    }
-});
-
 class AppComponent extends Component {
   componentWillMount() {
 
