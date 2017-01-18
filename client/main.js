@@ -1,43 +1,45 @@
 import { Meteor } from 'meteor/meteor';
-
 import React, { Component } from 'react';
-
-import { Provider } from 'react-redux'
-import { createStore, combineReducers } from 'redux'
-
-import { BrowserRouter, Match, Miss } from 'react-router'
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Match, Miss } from 'react-router';
 import { render } from 'react-dom';
 
 import FileTree from './filetree';
-import Editor from './editor';
+import { LocalEditor, StreamEditor } from './editor';
 
+import editorActions from '../client/editor/editorActions';
 
-import editorActions from '../client/editor/editorActions'
-
- let store = createStore(
-   combineReducers({
-     editor: editorActions
-   })
- )
+const store = createStore(
+  combineReducers({
+    editor: editorActions,
+  }),
+);
 
 class AppComponent extends Component {
   componentWillMount() {
 
   }
   render() {
+    const flexStyle = { display: 'flex' };
+
     return (
       <Provider store={store}>
         <BrowserRouter>
-          <div>
-            <Match exactly pattern="/" component={Editor} />
-            <Match exactly pattern="/" component={FileTree} />
+          <div style={flexStyle}>
+            <div style={{ width: '10%' }}>
+              <Match exactly pattern="/" component={FileTree} />
+            </div>
+            <div style={{ width: '90%', display: 'flex' }}>
+              <Match exactly pattern="/" component={LocalEditor} />
+              <Match exactly pattern="/" component={StreamEditor} />
+            </div>
           </div>
         </BrowserRouter>
       </Provider>
     );
   }
 }
-
 
 Meteor.startup(() => {
   render(<AppComponent />, document.getElementById('react-app'))
