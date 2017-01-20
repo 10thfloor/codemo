@@ -39,9 +39,7 @@ class FileTreeComponent extends Component {
   }
   loadFile(filePath, fileExtension) {
      Desktop.fetch('main', 'loadFile', 1000000, filePath).then((fileContent) => {
-
         Meteor.call('editor::setContent', fileContent, fileExtension);
-
       }, (error) => {
         console.log('timeout', error);
         // TODO: close dialog and show error if timeout
