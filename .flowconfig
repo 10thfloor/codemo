@@ -1,0 +1,14 @@
+[include]
+.*/client/.*
+.*/imports/.*
+.*/server/.*
+.*/.desktop/.*
+
+[ignore]
+.*/.vscode/.*
+.*/.meteor/.*
+.*/public/.*
+.*/node_modules/.*
+
+[libs]
+.flow-typed

@@ -1,14 +1,23 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "extends": ["airbnb", "plugin:meteor/recommended"],
+  "globals": {
+    "Desktop" : true
+  },
   "env": {
+    "es6": true,
     "browser": true,
-    "node": true
+    "node": true,
+    "meteor": true
+  },
+  "settings" : {
+    "import/resolver" : "meteor"
   },
   "plugins" : [
     "import",
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "meteor"
   ],
   "rules": {
     "max-len": 0,
@@ -18,6 +27,12 @@
     "react/prefer-stateless-function": 0,
     "react/jsx-no-bind": 0,
     "react/jsx-filename-extension": 0,
-    "react/prop-types": 0
+    "react/prop-types": 1,
+    "no-useless-computed-key" : 1,
+    "no-underscore-dangle": 0,
+    "no-console": 1,
+    "import/prefer-default-export" : 1,
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": 0
   }
 }

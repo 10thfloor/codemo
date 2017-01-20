@@ -7,6 +7,8 @@ import { setEditorContent } from '../editor/editorActions';
 import LocalEditorComponent from './components/localEditorComponent';
 import StreamEditorComponent from './components/streamEditorComponent';
 
+import { EditorContent } from '../../imports/collections';
+
 function editorContainer(props, onData) {
   if (!window.monaco) {
     // workaround monaco-css not understanding the environment
@@ -32,9 +34,10 @@ function editorContainer(props, onData) {
   }
 
   Tracker.autorun((c) => {
+    const sub = Meteor.subscribe('editorcontent');
     if (sub.ready()) {
-      let content = EditorContent.findOne()
-      props.setEditorContent({ editorContent: content.text, editorMode: content.mode })
+      const content = EditorContent.findOne()
+      props.setEditorContent({ editorContent: content.text, editorMode: content.mode });
     }
   });
 }
