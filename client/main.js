@@ -1,20 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
-import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Match } from 'react-router';
 import { render } from 'react-dom';
 
 import FileTree from './filetree';
-import { LocalEditor, StreamEditor } from './editor';
+import { EditorSplitPane } from './editor';
+import Toolbar from './toolbar';
 
-import editorActions from '../client/editor/editorActions';
-
-const store = createStore(
-  combineReducers({
-    editor: editorActions,
-  }),
-);
+import { store } from '../imports/redux/store';
 
 class AppComponent extends Component {
 
@@ -25,13 +19,11 @@ class AppComponent extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <div style={flexStyle}>
+            <Toolbar />
             <div style={{ width: '10%' }}>
               <Match exactly pattern="/" component={FileTree} />
             </div>
-            <div style={{ width: '90%', display: 'flex' }}>
-              <Match exactly pattern="/" component={LocalEditor} />
-              <Match exactly pattern="/" component={StreamEditor} />
-            </div>
+            <EditorSplitPane />
           </div>
         </BrowserRouter>
       </Provider>

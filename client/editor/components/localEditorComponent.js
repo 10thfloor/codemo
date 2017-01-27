@@ -1,56 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 
-export default class LocalEditorComponent extends Component {
+import CodemoEditor from './codemoEditor';
+
+class LocalEditorComponent extends CodemoEditor {
 
   constructor() {
     super();
-
     this.container = 'local_monaco_container';
-
-    this.defaultEditorModelConfig = {
-      editorContent: '// Welcome to codemo!',
-      editorMode: 'javascript',
-    };
-
-    this.state = {
-      editorLoaded: false,
-    };
-  }
-
-  componentDidMount() {
-    this.initMonaco();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.editorContent !== this.props.editorContent) {
-      this.editor.setModel(
-        window.monaco.editor.createModel(nextProps.editorContent, nextProps.editorMode),
-      );
+    const { editorContent, editorMode } = nextProps;
+    if (editorContent !== undefined && editorMode !== undefined) {
+      this.updateModel({ editorContent, editorMode });
     }
-  }
-
-  componentWillUnMount() {
-    this.destroyMonaco();
-  }
-
-  initMonaco(config = this.defaultEditorModelConfig) {
-    this.editor = window.monaco.editor.create(
-      document.getElementById(this.container),
-      { theme: 'vs-dark', lineNumbers: true },
-    );
-
-    this.updateModel(config);
-    this.setState({ editorLoaded: true });
-  }
-
-  destroyMonaco() {
-    if (typeof this.editor !== 'undefined') this.editor.destroy();
-  }
-
-  updateModel({ editorContent, editorMode }) {
-    this.editor.setModel(
-      window.monaco.editor.createModel(editorContent, editorMode),
-    );
   }
 
   render() {
@@ -62,3 +26,10 @@ export default class LocalEditorComponent extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  editorContent: state.editor.localEditor.editorContent,
+  editorMode: state.editor.localEditor.editorMode,
+});
+
+export const LocalEditor = connect(mapStateToProps)(LocalEditorComponent);

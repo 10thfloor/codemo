@@ -1,13 +1,16 @@
+import React from 'react';
+import { Match } from 'react-router';
 import { compose } from 'react-komposer';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { setEditorContent } from '../editor/editorActions';
+import { LocalEditor } from './components/localEditorComponent';
+import { StreamEditor } from './components/streamEditorComponent';
 
-import LocalEditorComponent from './components/localEditorComponent';
-import StreamEditorComponent from './components/streamEditorComponent';
-
-import { EditorContent } from '../../imports/collections';
+const Editors = () => (
+  <div style={{ width: '90%', display: 'flex' }}>
+    <Match exactly pattern="/" component={LocalEditor} />
+    <Match exactly pattern="/" component={StreamEditor} />
+  </div>
+);
 
 function editorContainer(props, onData) {
   if (!window.monaco) {
@@ -28,26 +31,11 @@ function editorContainer(props, onData) {
     const loadMonaco = setInterval(() => {
       if (window.monaco) {
         clearInterval(loadMonaco);
-        onData(null, { editor: window.monaco });
+        onData(null, true);
       }
-    }, 500);
+    }, 200);
   }
-
-  Tracker.autorun((c) => {
-    const sub = Meteor.subscribe('editorcontent');
-    if (sub.ready()) {
-      const content = EditorContent.findOne()
-      props.setEditorContent({ editorContent: content.text, editorMode: content.mode });
-    }
-  });
 }
 
-const mapStateToProps = state => ({
-  editorContent: state.editor.editorContent,
-  editorMode: state.editor.editorMode,
-});
 
-const mapDispatchToProps = dispatch => bindActionCreators({ setEditorContent }, dispatch);
-
-export const StreamEditor = connect(mapStateToProps, mapDispatchToProps)(compose(editorContainer)(StreamEditorComponent));
-export const LocalEditor = connect(mapStateToProps, mapDispatchToProps)(compose(editorContainer)(LocalEditorComponent));
+export const EditorSplitPane = compose(editorContainer)(Editors);

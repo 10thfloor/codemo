@@ -1,33 +1,43 @@
-import { Tracker } from 'meteor/tracker';
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'react-komposer';
+import trackerLoader from '../../../imports/tracker-loader';
 
-import { EditorContent } from '../../../imports/collections';
-import LocalEditorComponent from './localEditorComponent';
+import CodemoEditor from './codemoEditor';
+import { StreamEditorContent } from '../../../imports/collections';
 
-export default class StreamEditorComponent extends LocalEditorComponent {
+class StreamEditorComponent extends CodemoEditor {
 
   constructor() {
     super();
     this.container = 'stream_monaco_container';
-
-    this.defaultEditorModelConfig = {
-      editorContent: '// Streaming Window!',
-      editorMode: 'javascript',
-    };
   }
 
-  addChangeListener() {
-    this.editor.onDidChangeModelContent(() => {
-      // This is where we would update the mongo model
-    });
+  componentWillReceiveProps(nextProps) {
+    const { editorContent, editorMode } = nextProps;
+    if (editorContent !== undefined && editorMode !== undefined) {
+      this.updateModel({ editorContent, editorMode });
+    }
   }
 
-  subscribeToStream() {
-    const sub = Meteor.subscribe('editorcontent');
-    Tracker.autorun(() => {
-      if (sub.ready()) {
-        const content = EditorContent.findOne();
-        this.updateModel({ editorContent: content.text, editorMode: content.mode });
-      }
-    });
+  render() {
+    return (
+      <div
+        style={{ height: '100vw', width: '50%' }}
+        id={this.container}
+      />
+    );
   }
 }
+
+function streamEditorContainer(props, onData) {
+  if (Meteor.subscribe('streameditorcontent').ready()) {
+    const content = StreamEditorContent.findOne();
+    onData(null, { editorContent: content.text, editorMode: content.mode });
+  }
+}
+
+const container = compose(trackerLoader(streamEditorContainer))(StreamEditorComponent);
+
+export const StreamEditor = connect()(container);
+

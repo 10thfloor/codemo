@@ -1,38 +1,29 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { StreamEditorContent } from '../imports/collections';
 
-import { EditorContent } from '../imports/collections';
-
-const extMap = {
-  '.json': 'json',
-  '.html': 'html',
-  '.js': 'javascript',
-  '.css': 'css',
-};
-
-function fileExtensionMap(ext) {
-  return extMap[ext] ? extMap[ext] : 'javascript';
-}
 
 Meteor.startup(() => {
-  if (!EditorContent.findOne()) {
-    EditorContent.insert({
+  if (!StreamEditorContent.findOne()) {
+    StreamEditorContent.insert({
       text: '// Helloerrrrld.',
       mode: 'javascript',
     });
   }
 });
 
-Meteor.publish('editorcontent', () => {
-  return EditorContent.find();
+Meteor.publish('streameditorcontent', () => {
+  return StreamEditorContent.find();
 });
 
 Meteor.methods({
-  setEditorContent(fileContent, fileExtension) {
-    const content = EditorContent.findOne();
-    EditorContent.upsert(content._id, {
+  setStreamEditorContent(fileContent, editorMode) {
+    check(fileContent, String);
+    check(editorMode, String);
+    const content = StreamEditorContent.findOne();
+    StreamEditorContent.upsert(content._id, {
       text: fileContent,
-      mode: fileExtensionMap(fileExtension),
+      mode: editorMode,
     });
   },
 });

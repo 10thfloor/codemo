@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 
 import { Treebeard } from 'react-treebeard';
 
-import { setEditorContent } from '../editor/editorActions';
+import { fileExtensionMap } from '../../imports/util/file-ext-map';
+import { setLocalEditorContent } from '../editor/editorActions';
 
 class FileTreeComponent extends Component {
 
@@ -32,7 +33,10 @@ class FileTreeComponent extends Component {
 
   loadFile(filePath, fileExtension) {
     Desktop.fetch('main', 'loadFile', 1000000, filePath).then((fileContent) => {
-      Meteor.call('setEditorContent', fileContent, fileExtension);
+      this.props.setLocalEditorContent({
+        editorContent: fileContent,
+        editorMode: fileExtensionMap(fileExtension),
+      });
     }, (error) => {
       console.log('timeout', error);
         // TODO: close dialog and show error if timeout
@@ -66,7 +70,7 @@ function fileTreeContainer(props, onData) {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  setEditorContent,
+  setLocalEditorContent,
 }, dispatch);
 
 const FileTree = connect(null, mapDispatchToProps)(compose(fileTreeContainer)(FileTreeComponent));

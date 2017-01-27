@@ -1,1 +1,1 @@
-export const EditorContent = new Mongo.Collection('editorcontent');
+export const StreamEditorContent = new Mongo.Collection('streameditorcontent');
