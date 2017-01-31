@@ -18,7 +18,13 @@ export default class CodemoEditor extends Component {
     );
 
     this.updateModel({ editorContent, editorMode });
+
+    // Provide a callback for functions that need to run after monaco initMonaco init
+    this.monacoDidInit();
   }
+
+  // Provide an interface for a callback that runs after initMonaco
+  monacoDidInit() {} // eslint-disable-line
 
   destroyMonaco() {
     if (typeof this.editor !== 'undefined') this.editor.destroy();

@@ -12,6 +12,7 @@ class LocalEditorComponent extends CodemoEditor {
 
   componentWillReceiveProps(nextProps) {
     const { editorContent, editorMode } = nextProps;
+
     if (editorContent !== undefined && editorMode !== undefined) {
       this.updateModel({ editorContent, editorMode });
     }
