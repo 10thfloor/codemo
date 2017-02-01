@@ -13,6 +13,13 @@ class StreamEditorComponent extends CodemoEditor {
     this.container = 'stream_monaco_container';
   }
 
+  monacoDidInit() {
+    this.editor.onDidChangeModelContent(() => {
+      const id = this.props.currentStream ? this.props.currentStream.id : null;
+      Meteor.call('setStreamEditorContent', id, this.editor.getValue(), this.props.editorMode);
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
     const { editorContent, editorMode } = nextProps;
     if (editorContent !== undefined && editorMode !== undefined) {
@@ -31,13 +38,18 @@ class StreamEditorComponent extends CodemoEditor {
 }
 
 function streamEditorContainer(props, onData) {
-  if (Meteor.subscribe('streameditorcontent').ready()) {
-    const content = StreamEditorContent.findOne();
-    onData(null, { editorContent: content.text, editorMode: content.mode });
+  const id = props.currentStream ? props.currentStream.id : null;
+  if (Meteor.subscribe('streameditorcontent', id).ready()) {
+    const content = StreamEditorContent.findOne(id);
+    if (content) onData(null, { editorContent: content.text, editorMode: content.mode });
   }
 }
 
+const mapStateToProps = state => ({
+  currentStream: state.editor.currentStream,
+});
+
 const container = compose(trackerLoader(streamEditorContainer))(StreamEditorComponent);
 
-export const StreamEditor = connect()(container);
+export const StreamEditor = connect(mapStateToProps)(container);
 
