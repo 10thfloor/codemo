@@ -1,3 +1,5 @@
+import 'glamor/reset';
+
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';

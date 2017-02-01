@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 
+import { Row } from 'glamor/jsxstyle';
+
 import trackerLoader from '../../imports/tracker-loader';
 import { setCurrentStream } from '../editor/editorActions';
 import { StreamEditorContent } from '../../imports/collections';
@@ -44,26 +46,16 @@ class ToolBarComponent extends Component {
 
   render() {
     return (
-      <div>
+      <Row>
         <button onClick={this.onClickTakeoverStream.bind(this)}> Takeover Stream </button>
         <button onClick={this.onClickCreateStream.bind(this)}> Create Stream </button>
-
-        <br/>
-        <br/>
 
         <input value={this.state.streamIdInput} onChange={this.handleStreamIdChange.bind(this)} placeholder="Stream ID" />
         <button onClick={this.onClickJoinStream.bind(this)}> Join Stream </button>
 
         <p>Current Stream: { this.props.currentStream ? this.props.currentStream.id : 'None' }</p>
-        
-        <ul>
-          {
-            this.props.streams.map(stream => (
-              <li key={stream._id}>{ stream._id }</li>
-            ))
-          }
-        </ul>
-      </div>
+
+      </Row>
     );
   }
 }

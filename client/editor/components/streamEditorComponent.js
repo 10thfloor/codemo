@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 import trackerLoader from '../../../imports/tracker-loader';
@@ -30,7 +30,7 @@ class StreamEditorComponent extends CodemoEditor {
   render() {
     return (
       <div
-        style={{ height: '100vw', width: '50%' }}
+        style={{ display: 'flex', height: '100%', width: '50%' }}
         id={this.container}
       />
     );
@@ -41,7 +41,11 @@ function streamEditorContainer(props, onData) {
   const id = props.currentStream ? props.currentStream.id : null;
   if (Meteor.subscribe('streameditorcontent', id).ready()) {
     const content = StreamEditorContent.findOne(id);
-    if (content) onData(null, { editorContent: content.text, editorMode: content.mode });
+    if (content) {
+      onData(null, { editorContent: content.text, editorMode: content.mode });
+    } else {
+      onData(null, { editorContent: undefined, editorMode: undefined });
+    }
   }
 }
 

@@ -1,16 +1,14 @@
 import React from 'react';
+import { Column } from 'glamor/jsxstyle';
+
 import Toolbar from '../toolbar';
-import FileTree from '../filetree';
 import { EditorSplitPane } from '../editor';
 
 const WorkSpace = () => (
-  <div style={{ display: 'flex' }}>
+  <Column style={{ height: '100%' }}>
     <Toolbar />
-    <div style={{ width: '10%' }}>
-      <FileTree />
-    </div>
     <EditorSplitPane />
-  </div>
+  </Column>
 );
 
 export default WorkSpace;

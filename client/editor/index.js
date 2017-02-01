@@ -2,14 +2,18 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { compose } from 'react-komposer';
 
+import { Row } from 'glamor/jsxstyle';
+
+import FileTree from '../filetree';
 import { LocalEditor } from './components/localEditorComponent';
 import { StreamEditor } from './components/streamEditorComponent';
 
 const Editors = () => (
-  <div style={{ width: '90%', display: 'flex' }}>
+  <Row style={{ height: '100%' }}>
+    <FileTree />
     <Route exactly pattern="/" component={LocalEditor} />
     <Route exactly pattern="/" component={StreamEditor} />
-  </div>
+  </Row>
 );
 
 function editorContainer(props, onData) {

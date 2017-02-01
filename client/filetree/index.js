@@ -2,11 +2,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 import { bindActionCreators } from 'redux';
-
 import { Treebeard } from 'react-treebeard';
+
+import { css } from 'glamor';
 
 import { fileExtensionMap } from '../../imports/util/file-ext-map';
 import { setLocalEditorContent } from '../editor/editorActions';
+
+let rule = css({
+  color: 'red',
+  ':hover': {
+    color: 'pink'
+  },
+  '@media(min-width: 300px)': {
+    color: 'green',
+    ':hover': {
+      color: 'yellow'
+    }
+  }
+})
 
 class FileTreeComponent extends Component {
 

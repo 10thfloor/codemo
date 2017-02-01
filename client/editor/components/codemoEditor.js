@@ -4,10 +4,12 @@ export default class CodemoEditor extends Component {
 
   componentDidMount() {
     this.initMonaco();
+    window.addEventListener('resize', this.updateDimensions.bind(this));
   }
 
   componentWillUnMount() {
     this.destroyMonaco();
+    window.removeEventListener('resize', this.updateDimensions.bind(this));
   }
 
   initMonaco() {
@@ -24,7 +26,11 @@ export default class CodemoEditor extends Component {
   }
 
   // Provide an interface for a callback that runs after initMonaco
-  monacoDidInit() {} // eslint-disable-line
+  monacoDidInit() { } // eslint-disable-line
+
+  updateDimensions() {
+    this.editor.layout();
+  }
 
   destroyMonaco() {
     if (typeof this.editor !== 'undefined') this.editor.destroy();

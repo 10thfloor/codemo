@@ -21,7 +21,7 @@ class LocalEditorComponent extends CodemoEditor {
   render() {
     return (
       <div
-        style={{ height: '100vw', width: '50%' }}
+        style={{ display: 'flex', height: '100%', width: '50%' }}
         id={this.container}
       />
     );
