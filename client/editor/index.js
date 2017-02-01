@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match } from 'react-router';
+import { Route } from 'react-router-dom';
 import { compose } from 'react-komposer';
 
 import { LocalEditor } from './components/localEditorComponent';
@@ -7,8 +7,8 @@ import { StreamEditor } from './components/streamEditorComponent';
 
 const Editors = () => (
   <div style={{ width: '90%', display: 'flex' }}>
-    <Match exactly pattern="/" component={LocalEditor} />
-    <Match exactly pattern="/" component={StreamEditor} />
+    <Route exactly pattern="/" component={LocalEditor} />
+    <Route exactly pattern="/" component={StreamEditor} />
   </div>
 );
 
@@ -36,6 +36,5 @@ function editorContainer(props, onData) {
     }, 200);
   }
 }
-
 
 export const EditorSplitPane = compose(editorContainer)(Editors);
