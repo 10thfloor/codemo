@@ -28,8 +28,6 @@ class JoinStreamForm extends Gandalf {
     const data = this.getCleanFormData();
     if (!data) return;
 
-    console.log('hi');
-
     this.props.setCurrentStream(data.idInput);
     if (this.props.onSubmitSuccess) this.props.onSubmitSuccess(data);
   }
