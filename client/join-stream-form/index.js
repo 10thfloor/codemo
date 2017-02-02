@@ -36,16 +36,6 @@ class JoinStreamForm extends Gandalf {
 
   render() {
     const fields = this.state.fields;
-    // return (
-    //   <Column alignItems="center" justifyContent="center" style={{ height: '100%' }}>
-    //     <Row>
-    //       { fields.idInput.element }
-    //     </Row>
-    //     <Row paddingTop="1rem">
-    //       <FlatButton label="Get Coding" primary onClick={() => this.handleSubmit()} />
-    //     </Row>
-    //   </Column>
-    // );
 
     const flexDirection = this.props.stackVertical ? 'column' : 'row';
     const buttonPadding = this.props.stackVertical ? '1rem 0 0 0' : '0 0 0 1rem';
