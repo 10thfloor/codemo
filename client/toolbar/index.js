@@ -3,11 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 
-import { Row } from 'glamor/jsxstyle';
+import { Row, Column, Flex } from 'glamor/jsxstyle';
+import Drawer from 'material-ui/Drawer';
+import FlatButton from 'material-ui/FlatButton';
 
 import trackerLoader from '../../imports/tracker-loader';
 import { setCurrentStream } from '../editor/editorActions';
 import { StreamEditorContent } from '../../imports/collections';
+import FileTree from '../filetree';
+import JoinStreamForm from '../join-stream-form';
 
 class ToolBarComponent extends Component {
 
@@ -15,12 +19,8 @@ class ToolBarComponent extends Component {
     super();
     this.state = {
       streamIdInput: '',
+      showFileDrawer: false,
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(Meteor.user());
-    console.log('ToolBar componentWillReceiveProps', nextProps);
   }
 
   onClickTakeoverStream() {
@@ -44,18 +44,31 @@ class ToolBarComponent extends Component {
     this.setState({ streamIdInput: e.target.value });
   }
 
+  revealFileDrawer() {
+    this.setState({ showFileDrawer: !this.state.showFileDrawer });
+  }
+
   render() {
     return (
-      <Row>
-        <button onClick={this.onClickTakeoverStream.bind(this)}> Takeover Stream </button>
-        <button onClick={this.onClickCreateStream.bind(this)}> Create Stream </button>
+      <Column>
+        <Row alignItems="center" justifyContent="space-between" padding="10px">
+          <FlatButton onTouchTap={this.revealFileDrawer.bind(this)}>
+            <Flex alignItems="center" justifyContent="center">
+              <i className="material-icons">folder_open</i>
+            </Flex>
+          </FlatButton>
 
-        <input value={this.state.streamIdInput} onChange={this.handleStreamIdChange.bind(this)} placeholder="Stream ID" />
-        <button onClick={this.onClickJoinStream.bind(this)}> Join Stream </button>
+          <JoinStreamForm cta="Change Stream" />
+        </Row>
 
-        <p>Current Stream: { this.props.currentStream ? this.props.currentStream.id : 'None' }</p>
-
-      </Row>
+        <Drawer
+          open={this.state.showFileDrawer}
+          docked={false}
+          onRequestChange={showFileDrawer => this.setState({ showFileDrawer })}
+        >
+          <FileTree />
+        </Drawer>
+      </Column>
     );
   }
 }
