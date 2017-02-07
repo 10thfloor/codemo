@@ -6,8 +6,8 @@ import _get from 'lodash.get';
 import { Row, Column } from 'glamor/jsxstyle';
 
 import CodemoEditor from './codemoEditor';
-import trackerLoader from '../../../imports/tracker-loader';
-import { StreamEditorContent } from '../../../imports/collections';
+import trackerLoader from '../../../../imports/tracker-loader';
+import { StreamEditorContent } from '../../../../imports/collections';
 
 class StreamEditorComponent extends CodemoEditor {
 

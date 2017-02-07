@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { ReactiveVar } from 'meteor/reactive-var';
 
 import { StreamEditorContent } from '../imports/collections';
 
@@ -12,15 +11,20 @@ const defaultStreamContent = {
 Meteor.startup(() => {});
 
 // NOTE: Use ES5 function syntax to maintain outer this context
-Meteor.publish('streameditorcontent', function publishStreamEditorContent(id) {
+Meteor.publish('streameditorcontent', function publishStreamEditorContent(id) { // eslint-disable-line
   if (!id) return this.ready();
 
   check(id, String);
-  return StreamEditorContent.find(id);
+
+  return StreamEditorContent.find(id, {
+    fields: StreamEditorContent.publicFields,
+  });
 });
 
-Meteor.publish('recentstreams', function publishAllStreams() {
-  return StreamEditorContent.find();
+
+Meteor.publish('recentstreams', function publishAllStreams() { // eslint-disable-line
+  const RECENT_STREAM_LIMIT = 20;
+  return StreamEditorContent.find({}, { limit: RECENT_STREAM_LIMIT });
 });
 
 const setStreamEditorContent = (id, fileContent, editorMode) => {
@@ -36,9 +40,7 @@ const setStreamEditorContent = (id, fileContent, editorMode) => {
   });
 };
 
-const createStream = () => {
-  return StreamEditorContent.insert(defaultStreamContent);
-};
+const createStream = () => StreamEditorContent.insert(defaultStreamContent);
 
 Meteor.methods({
   createStream,
