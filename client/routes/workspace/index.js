@@ -1,8 +1,8 @@
 import React from 'react';
 import { Column } from 'glamor/jsxstyle';
 
-import Toolbar from '../toolbar';
-import { EditorSplitPane } from '../editor';
+import Toolbar from './toolbar';
+import { EditorSplitPane } from '../../components/editor';
 
 const WorkSpace = () => (
   <Column style={{ height: '100%' }}>

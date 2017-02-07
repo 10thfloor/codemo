@@ -6,7 +6,7 @@ import { Treebeard } from 'react-treebeard';
 
 import { css } from 'glamor';
 
-import { fileExtensionMap } from '../../imports/util/file-ext-map';
+import { fileExtensionMap } from '../../../imports/util/file-ext-map';
 import { setLocalEditorContent } from '../editor/editorActions';
 
 const rule = css({

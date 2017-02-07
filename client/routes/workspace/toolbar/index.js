@@ -7,11 +7,11 @@ import { Row, Column, Flex } from 'glamor/jsxstyle';
 import Drawer from 'material-ui/Drawer';
 import FlatButton from 'material-ui/FlatButton';
 
-import trackerLoader from '../../imports/tracker-loader';
-import { setCurrentStream } from '../editor/editorActions';
-import { StreamEditorContent } from '../../imports/collections';
-import FileTree from '../filetree';
-import JoinStreamForm from '../join-stream-form';
+import trackerLoader from '../../../../imports/tracker-loader';
+import { setCurrentStream } from '../../../components/editor/editorActions';
+import { StreamEditorContent } from '../../../../imports/collections';
+import FileTree from '../../../components/filetree';
+import JoinStreamForm from '../../../components/join-stream-form';
 
 class ToolBarComponent extends Component {
 
@@ -23,25 +23,10 @@ class ToolBarComponent extends Component {
     };
   }
 
-  onClickTakeoverStream() {
-    const { editorContent, editorMode } = this.props.localEditor;
-    const id = this.props.currentStream ? this.props.currentStream.id : null;
-    Meteor.call('setStreamEditorContent', id, editorContent, editorMode);
-  }
-
   onClickCreateStream() {
     Meteor.call('createStream', (err, id) => {
       this.props.setCurrentStream(id);
     });
-  }
-
-  onClickJoinStream() {
-    this.props.setCurrentStream(this.state.streamIdInput);
-    this.state.streamIdInput = '';
-  }
-
-  handleStreamIdChange(e) {
-    this.setState({ streamIdInput: e.target.value });
   }
 
   revealFileDrawer() {

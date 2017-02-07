@@ -1,14 +1,13 @@
 import React from 'react';
 import { compose } from 'react-komposer';
 import { connect } from 'react-redux';
-import _get from 'lodash.get';
 
 import { Row, Column } from 'glamor/jsxstyle';
 
 import LocalEditor from './components/localEditorComponent';
 import StreamEditor from './components/streamEditorComponent';
 
-const Editors = ({ currentStream }) => (
+const Editors = () => (
   <Row style={{ height: '100%' }}>
     <Column style={{ height: '100%', width: '50%' }}>
       <LocalEditor style={{ height: '100%' }} />

@@ -20,13 +20,10 @@ const updateStreamContent = (editorMode, currentStream, editorContent) => {
   Meteor.call('setStreamEditorContent', currentStream.id, editorContent, editorMode);
 };
 
-const mapDispatchToProps = {
-  updateStreamContent,
-};
-
 const mapStateToProps = state => ({
   editorMode: state.editor.localEditor.editorMode,
   currentStream: state.editor.currentStream,
+  updateStreamContent,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TakeOverStreamComponent);
+export default connect(mapStateToProps)(TakeOverStreamComponent);

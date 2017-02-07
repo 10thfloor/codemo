@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Gandalf from 'gandalf-validator';
-import { Column, Row, Flex } from 'glamor/jsxstyle';
+import { Flex } from 'glamor/jsxstyle';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { setCurrentStream } from '../editor/editorActions';
