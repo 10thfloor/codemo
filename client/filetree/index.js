@@ -9,7 +9,7 @@ import { css } from 'glamor';
 import { fileExtensionMap } from '../../imports/util/file-ext-map';
 import { setLocalEditorContent } from '../editor/editorActions';
 
-let rule = css({
+const rule = css({
   color: 'red',
   ':hover': {
     color: 'pink'
@@ -50,6 +50,7 @@ class FileTreeComponent extends Component {
       this.props.setLocalEditorContent({
         editorContent: fileContent,
         editorMode: fileExtensionMap(fileExtension),
+        filePath,
       });
     }, (error) => {
       console.log('timeout', error);

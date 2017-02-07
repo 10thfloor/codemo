@@ -20,7 +20,7 @@ export function setCurrentStream(id) {
   return { type: SET_CURRENT_STREAM, payload: { id } };
 }
 
-export function setLocalEditorContent({ editorContent, editorMode }) {
-  return { type: SET_LOCAL_EDITOR_CONTENT, payload: { editorContent, editorMode } };
+export function setLocalEditorContent({ editorContent, editorMode, filePath }) {
+  return { type: SET_LOCAL_EDITOR_CONTENT, payload: { editorContent, editorMode, filePath } };
 }
 
