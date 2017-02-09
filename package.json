@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",
+    "bcrypt": "^1.0.2",
     "directory-tree": "^1.2.0",
     "gandalf-validator": "^0.2.0",
     "glamor": "^2.20.22",
@@ -14,6 +15,7 @@
     "lodash.get": "^4.4.2",
     "material-ui": "^0.16.7",
     "meteor-node-stubs": "~0.2.0",
+    "moment": "^2.17.1",
     "monaco-editor": "^0.8.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

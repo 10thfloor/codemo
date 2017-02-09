@@ -70,7 +70,7 @@ class FileTreeComponent extends Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.loadFolder()}>Load Folder</button>
+        <a href onClick={() => this.loadFolder()}>Load Folder</a>
         <Treebeard
           onToggle={this.onToggle}
           data={this.state.files}
