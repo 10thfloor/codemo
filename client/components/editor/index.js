@@ -2,20 +2,21 @@ import React from 'react';
 import { compose } from 'react-komposer';
 import { connect } from 'react-redux';
 
-import { Row, Column } from 'glamor/jsxstyle';
+import { Row, Column, Flex } from 'glamor/jsxstyle';
 
 import LocalEditor from './components/localEditorComponent';
 import StreamEditor from './components/streamEditorComponent';
 
 const Editors = () => (
-  <Row style={{ height: '100%' }}>
-    <Column style={{ height: '100%', width: '50%' }}>
-      <LocalEditor style={{ height: '100%' }} />
-    </Column>
-    <Column style={{ height: '100%', width: '50%', borderLeft: '5px solid #ddd' }}>
-      <StreamEditor style={{ height: '100%' }} />
-    </Column>
-  </Row>
+  <Flex flex="1">
+    <Flex flexBasis="50%">
+      <LocalEditor />
+    </Flex>
+
+    <Flex flexBasis="50%">
+      <StreamEditor />
+    </Flex>
+  </Flex>
 );
 
 function editorContainer(props, onData) {

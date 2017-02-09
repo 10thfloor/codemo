@@ -10,6 +10,7 @@ const TakeOverStreamComponent = ({ updateStreamContent, editorMode, currentStrea
     label={'Transfer to Stream'}
     primary
     labelPosition="before"
+    disabled={!_get(currentStream, 'id')}
     onTouchTap={() => updateStreamContent(editorMode, currentStream, getEditorContent())}
     icon={<Arrow />}
   />

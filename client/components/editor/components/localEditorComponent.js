@@ -36,7 +36,7 @@ class LocalEditorComponent extends CodemoEditor {
 
   render() {
     return (
-      <Column style={{ height: '100%' }}>
+      <Column flex="1">
         <Row style={{ height: '93%' }} id={this.container} />
         <Row style={{ height: '7%' }} alignItems="center" justifyContent="space-between" padding="0 1rem">
           <p>{ this.getActiveFilename() }</p>

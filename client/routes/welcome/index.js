@@ -10,6 +10,7 @@ const piStyle = {
   right: '10px',
   textDecoration: 'none',
   color: 'black',
+  opacity: 0.2,
 };
 
 const Welcome = ({ push }) => (

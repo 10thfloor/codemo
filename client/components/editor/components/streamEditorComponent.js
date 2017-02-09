@@ -36,10 +36,10 @@ class StreamEditorComponent extends CodemoEditor {
 
   render() {
     return (
-      <Column style={{ height: '100%' }}>
+      <Column flex="1">
         <Row style={{ height: '93%' }} id={this.container} />
         <Row style={{ height: '7%' }} alignItems="center" justifyContent="space-between" padding="0 1rem">
-          <p> CURRENT STREAM { _get(this.props.currentStream, 'id') }</p>
+          <p> Stream: { this.props.name || 'None' }</p>
         </Row>
       </Column>
     );
@@ -50,7 +50,7 @@ function streamEditorContainer(props, onData) {
   const id = _get(props.currentStream, 'id');
   if (Meteor.subscribe('streameditorcontent', id).ready()) {
     const content = StreamEditorContent.findOne(id);
-    onData(null, { editorContent: _get(content, 'text'), editorMode: _get(content, 'mode') });
+    onData(null, { editorContent: _get(content, 'text'), editorMode: _get(content, 'mode'), name: _get(content, 'name') });
   }
 }
 
