@@ -28,8 +28,15 @@ class JoinStreamForm extends Gandalf {
     const data = this.getCleanFormData();
     if (!data) return;
 
-    this.props.setCurrentStream(data.idInput);
-    if (this.props.onSubmitSuccess) this.props.onSubmitSuccess(data);
+    Meteor.call('joinStream', data.idInput, (err) => {
+      if (err) {
+        console.log('error joining stream', err);
+        return;
+      }
+
+      this.props.setCurrentStream(data.idInput);
+      if (this.props.onSubmitSuccess) this.props.onSubmitSuccess(data);
+    });
   }
 
   render() {

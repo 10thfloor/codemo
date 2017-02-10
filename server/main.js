@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { publishStreamEditorContent, publishAllStreams } from './publishers';
-import { setStreamEditorContent, createStream } from './methods';
+import { setStreamEditorContent, createStream, joinStream, setLeader } from './methods';
 
 Meteor.startup(() => {});
 
@@ -10,4 +10,6 @@ Meteor.publish('recentstreams', publishAllStreams);
 Meteor.methods({
   createStream,
   setStreamEditorContent,
+  joinStream,
+  setLeader,
 });
