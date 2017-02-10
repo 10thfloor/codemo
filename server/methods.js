@@ -31,14 +31,44 @@ function createStream(name) {
   const streamData = Object.assign(
     defaultStreamContent, {
       name,
+      owner: this.userId,
+      leader: this.userId,
       createdAt: moment().toDate(),
+      users: [this.userId],
     },
   );
 
   return StreamEditorContent.insert(streamData);
 }
 
+function joinStream(id) {
+  if (!id) return null;
+
+  check(id, String);
+
+  return StreamEditorContent.update(id, {
+    $addToSet: {
+      users: this.userId,
+    },
+  });
+}
+
+function setLeader(streamId, userId) {
+  if (!streamId || !userId) return null;
+
+  check(streamId, String);
+  check(userId, String);
+
+  return StreamEditorContent.update(streamId, {
+    $set: {
+      leader: userId,
+    },
+  });
+}
+
 export {
   createStream,
   setStreamEditorContent,
+  joinStream,
+  setLeader,
 };

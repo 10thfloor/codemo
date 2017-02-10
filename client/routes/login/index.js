@@ -6,7 +6,6 @@ import AuthForm from '../../components/auth-form';
 
 const buildLoginFunction = push => (
   ({ username, password }) => {
-    console.log(username, password);
     Meteor.loginWithPassword(username, password, (error) => {
       if (error) {
         return console.log(`There was an error: ${error.reason}`);

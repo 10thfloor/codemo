@@ -3,6 +3,7 @@ import { Column, Row, Flex } from 'glamor/jsxstyle';
 
 import Toolbar from '../../components/toolbar';
 import Streams from '../../components/streams';
+import StreamUsers from '../../components/stream-users';
 import { EditorSplitPane } from '../../components/editor';
 import CreateStreamForm from '../../components/create-stream-form';
 
@@ -15,8 +16,12 @@ const OverWatch = () => (
         <Streams />
       </Flex>
 
-      <Flex flexBasis="90%">
+      <Flex flexBasis="80%">
         <EditorSplitPane />
+      </Flex>
+
+      <Flex flexBasis="10%">
+        <StreamUsers />
       </Flex>
     </Row>
   </Column>
