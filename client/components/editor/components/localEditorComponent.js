@@ -11,6 +11,7 @@ class LocalEditorComponent extends CodemoEditor {
   constructor() {
     super();
     this.container = 'local_monaco_container';
+    this.local = true;
   }
 
   componentWillReceiveProps(nextProps) {

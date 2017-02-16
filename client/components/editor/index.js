@@ -13,7 +13,7 @@ const Editors = () => (
       <LocalEditor />
     </Flex>
 
-    <Flex flexBasis="50%">
+    <Flex flexBasis="50%" borderLeft="5px white solid">
       <StreamEditor />
     </Flex>
   </Flex>

@@ -11,6 +11,16 @@ function publishStreamEditorContent(id) {
   });
 }
 
+function publishStreamEditorContentUsers(users) {
+  if (!users) return this.ready();
+
+  check(users, Array);
+
+  return Meteor.users.find({
+    _id: { $in: users },
+  });
+}
+
 function publishAllStreams() {
   const RECENT_STREAM_LIMIT = 20;
   const queryParams = {
@@ -22,5 +32,6 @@ function publishAllStreams() {
 
 export {
   publishStreamEditorContent,
+  publishStreamEditorContentUsers,
   publishAllStreams,
 };

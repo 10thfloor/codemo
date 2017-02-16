@@ -16,10 +16,10 @@ const streamUsersComponent = ({ users = [], currentStream }) => (
     <h2>Users</h2>
     <ul className="small-text">
       {
-        users.map(userId => (
-          <li key={userId}>
-            <a href onClick={() => setLeader(currentStream.id, userId)}>
-              { userId }
+        users.map(user => (
+          <li key={user._id}>
+            <a href onClick={() => setLeader(currentStream.id, user._id)}>
+              { user.username }
             </a>
           </li>
         ))
@@ -32,7 +32,12 @@ function streamsUsersContainer(props, onData) {
   const id = _get(props.currentStream, 'id');
   if (Meteor.subscribe('streameditorcontent', id).ready()) {
     const content = StreamEditorContent.findOne(id);
-    onData(null, { users: _get(content, 'users') });
+
+    if (Meteor.subscribe('streameditorcontentusers', _get(content, 'users') || []).ready()) {
+      onData(null, {
+        users: Meteor.users.find().fetch(),
+      });
+    }
   }
 }
 

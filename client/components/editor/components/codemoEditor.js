@@ -13,12 +13,24 @@ export default class CodemoEditor extends Component {
   }
 
   initMonaco() {
-    const { editorContent, editorMode } = this.props;
-    this.editor = window.monaco.editor.create(
-      document.getElementById(this.container),
-      { theme: 'vs-dark', lineNumbers: true },
-    );
+    this.createEditor();
+  }
 
+  createEditor(canWrite = false, theme = 'vs-dark') {
+    const mount = document.getElementById(this.container);
+
+    while (mount.firstChild) {
+      mount.removeChild(mount.firstChild);
+    }
+    const readOnly = !(this.local || canWrite);
+
+    this.editor = window.monaco.editor.create(mount, {
+      lineNumbers: true,
+      readOnly,
+      theme,
+    });
+
+    const { editorContent, editorMode } = this.props;
     this.updateModel({ editorContent, editorMode });
 
     // Provide a callback for functions that need to run after monaco initMonaco init
@@ -26,7 +38,7 @@ export default class CodemoEditor extends Component {
   }
 
   // Provide an interface for a callback that runs after initMonaco
-  monacoDidInit() { } // eslint-disable-line
+  monacoDidInit() {} // eslint-disable-line
 
   updateDimensions() {
     this.editor.layout();
