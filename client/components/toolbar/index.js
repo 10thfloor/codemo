@@ -31,14 +31,17 @@ class ToolBarComponent extends Component {
             <i className="material-icons">folder_open</i>
           </Flex>
 
-          <Drawer
-            open={this.state.showFileDrawer}
-            docked={false}
-            onRequestChange={showFileDrawer => this.setState({ showFileDrawer })}
-          >
-            <FileTree />
-          </Drawer>
+
         </FlatButton>
+
+        <Drawer
+          style={{ display: 'block' }}
+          open={this.state.showFileDrawer}
+          docked={false}
+          onRequestChange={showFileDrawer => this.setState({ showFileDrawer })}
+        >
+          <FileTree />
+        </Drawer>
 
         { streamForm }
       </Row>

@@ -4,6 +4,7 @@ import { compose } from 'react-komposer';
 import _get from 'lodash.get';
 
 import { Row, Column, Flex } from 'glamor/jsxstyle';
+import Snackbar from 'material-ui/Snackbar';
 
 import CodemoEditor from './codemoEditor';
 import trackerLoader from '../../../../imports/tracker-loader';
@@ -15,7 +16,13 @@ class StreamEditorComponent extends CodemoEditor {
     super();
     this.container = 'stream_monaco_container';
     this.initialStreamLoadComplete = false;
+    this.focused = false;
     this.active = false;
+    this.leaderMessageDuration = 2500;
+
+    this.state = {
+      showLeaderMessage: false,
+    };
   }
 
   monacoDidInit() {
@@ -29,14 +36,47 @@ class StreamEditorComponent extends CodemoEditor {
     });
   }
 
+  shouldEnableEditing(leader) {
+    return !this.active && Meteor.userId() === leader;
+  }
+
+  shouldDisableEditing(leader) {
+    return this.active && Meteor.userId() !== leader;
+  }
+
+  enableEditing() {
+    this.active = true;
+    this.createEditor(true, 'hc-black');
+
+    this.setState({ showLeaderMessage: true }, () => {
+      setTimeout(() => this.handleLeaderMessageClose(), this.leaderMessageDuration);
+    });
+  }
+
+  handleLeaderMessageClose() {
+    this.setState({ showLeaderMessage: false });
+  }
+
+  disableEditing() {
+    this.active = false;
+    this.createEditor();
+    this.handleLeaderMessageClose();
+  }
+
   shouldUpdateComponentWithStream(leader) {
     if (!this.initialStreamLoadComplete) return true;
 
-    return !this.active || Meteor.userId() !== leader;
+    return !this.focused || Meteor.userId() !== leader;
   }
 
   componentWillReceiveProps(nextProps) {
     const { editorContent, editorMode, leader } = nextProps;
+
+    if (this.shouldEnableEditing(leader)) {
+      this.enableEditing();
+    } else if (this.shouldDisableEditing(leader)) {
+      this.disableEditing();
+    }
 
     if (this.shouldUpdateComponentWithStream(leader) && editorContent !== undefined && editorMode !== undefined) {
       this.initialStreamLoadComplete = true;
@@ -44,19 +84,36 @@ class StreamEditorComponent extends CodemoEditor {
     }
   }
 
+  setFocus(isFocused) {
+    this.focused = isFocused;
+  }
 
-  setActive(isActive) {
-    this.active = isActive;
+  getLeaderUsername() {
+    if (!this.props.leaderUser) return 'No one';
+
+    console.log(this.props.leaderUser);
+    if (this.props.leaderUser._id === Meteor.userId()) return 'YOU';
+    return this.props.leaderUser.username;
   }
 
   render() {
     return (
-      <Column flex="1" onBlur={() => this.setActive(false)} onFocus={() => this.setActive(true)}>
+      <Column flex="1" onBlur={() => this.setFocus(false)} onFocus={() => this.setFocus(true)}>
         <Row style={{ height: '93%' }} id={this.container} />
         <Row style={{ height: '7%' }} alignItems="center" justifyContent="space-between" padding="0 1rem">
           <Column>
             <Flex> { this.props.name || 'No Active Stream' }</Flex>
             <small>{ _get(this.props.currentStream, 'id') }</small>
+            <Snackbar
+              open={this.state.showLeaderMessage}
+              message="You are now in control of the stream!"
+              autoHideDuration={this.leaderMessageDuration}
+              onRequestClose={() => this.handleLeaderMessageClose()}
+            />
+          </Column>
+
+          <Column>
+            Leader: { this.getLeaderUsername() }
           </Column>
         </Row>
       </Column>
@@ -69,12 +126,17 @@ const streamEditorContainer = (props, onData) => {
 
   if (Meteor.subscribe('streameditorcontent', id).ready()) {
     const content = StreamEditorContent.findOne(id);
-    onData(null, {
-      editorContent: _get(content, 'text'),
-      editorMode: _get(content, 'mode'),
-      name: _get(content, 'name'),
-      leader: _get(content, 'leader'),
-    });
+
+    if (Meteor.subscribe('streameditorcontentusers', _get(content, 'users') || []).ready()) {
+      onData(null, {
+        editorContent: _get(content, 'text'),
+        editorMode: _get(content, 'mode'),
+        name: _get(content, 'name'),
+        leader: _get(content, 'leader'),
+        leaderUser: Meteor.users.findOne(_get(content, 'leader')),
+        users: Meteor.users.find().fetch(),
+      });
+    }
   }
 };
 
