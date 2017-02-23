@@ -8,17 +8,21 @@ const defaultStreamContent = {
   name: 'DEFAULT NAME',
 };
 
-function setStreamEditorContent(id, fileContent, editorMode) {
+function setStreamEditorContent(id, fileContent, editorMode, viewState = {}) {
   if (!id) return;
 
   check(id, String);
   check(fileContent, String);
   check(editorMode, String);
+  check(viewState, Object);
+
+  delete viewState.contributionsState['editor.contrib.folding'];
 
   StreamEditorContent.update(id, {
     $set: {
       text: fileContent,
       mode: editorMode,
+      viewState,
     },
   });
 }

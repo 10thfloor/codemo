@@ -27,11 +27,13 @@ class StreamEditorComponent extends CodemoEditor {
 
   monacoDidInit() {
     this.editor.onDidChangeModelContent(() => {
+
       Meteor.call(
         'setStreamEditorContent',
         _get(this.props.currentStream, 'id'),
         this.editor.getValue(),
         this.props.editorMode,
+        this.editor.saveViewState()
       );
     });
   }
@@ -70,7 +72,7 @@ class StreamEditorComponent extends CodemoEditor {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { editorContent, editorMode, leader } = nextProps;
+    const { editorContent, editorMode, viewState, leader } = nextProps;
 
     if (this.shouldEnableEditing(leader)) {
       this.enableEditing();
@@ -80,7 +82,7 @@ class StreamEditorComponent extends CodemoEditor {
 
     if (this.shouldUpdateComponentWithStream(leader) && editorContent !== undefined && editorMode !== undefined) {
       this.initialStreamLoadComplete = true;
-      this.updateModel({ editorContent, editorMode });
+      this.updateModel({ editorContent, editorMode, viewState });
     }
   }
 
@@ -90,8 +92,6 @@ class StreamEditorComponent extends CodemoEditor {
 
   getLeaderUsername() {
     if (!this.props.leaderUser) return 'No one';
-
-    console.log(this.props.leaderUser);
     if (this.props.leaderUser._id === Meteor.userId()) return 'YOU';
     return this.props.leaderUser.username;
   }
@@ -131,6 +131,7 @@ const streamEditorContainer = (props, onData) => {
       onData(null, {
         editorContent: _get(content, 'text'),
         editorMode: _get(content, 'mode'),
+        viewState: _get(content, 'viewState'),
         name: _get(content, 'name'),
         leader: _get(content, 'leader'),
         leaderUser: Meteor.users.findOne(_get(content, 'leader')),
