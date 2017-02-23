@@ -16,7 +16,6 @@ const updateStreamContent = (editorMode, currentStream, editorContent) => {
 
 const TakeOverStreamComponent = ({ leader, editorMode, currentStream, getEditorContent }) => (
   <RaisedButton
-    label={'Transfer to Stream'}
     primary
     labelPosition="before"
     disabled={!_get(currentStream, 'id') || leader !== Meteor.userId()}
@@ -24,7 +23,6 @@ const TakeOverStreamComponent = ({ leader, editorMode, currentStream, getEditorC
     icon={<Arrow />}
   />
 );
-
 
 function takeOverStreamContainer(props, onData) {
   const id = _get(props.currentStream, 'id');

@@ -5,6 +5,7 @@ import { Row, Column } from 'glamor/jsxstyle';
 
 import CodemoEditor from './codemoEditor';
 import TakeOverStreamButton from './takeOverStream';
+import SaveFileButton from './saveFileButton';
 
 class LocalEditorComponent extends CodemoEditor {
 
@@ -41,6 +42,7 @@ class LocalEditorComponent extends CodemoEditor {
         <Row style={{ height: '93%' }} id={this.container} />
         <Row style={{ height: '7%' }} alignItems="center" justifyContent="space-between" padding="0 1rem">
           <p>{ this.getActiveFilename() }</p>
+          <SaveFileButton getEditorContent={() => this.editor.getValue()} />
           <TakeOverStreamButton getEditorContent={() => this.editor.getValue()} />
         </Row>
       </Column>
