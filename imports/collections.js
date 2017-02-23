@@ -8,6 +8,7 @@ StreamEditorContent.publicFields = {
   owner: 1,
   leader: 1,
   users: 1,
+  viewState: 1,
 };
 
 const StreamUsers = new Mongo.Collection('streamusers');

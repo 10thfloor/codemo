@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import isEmpty from 'is-empty';
 
 export default class CodemoEditor extends Component {
 
@@ -48,10 +49,14 @@ export default class CodemoEditor extends Component {
     if (typeof this.editor !== 'undefined') this.editor.destroy();
   }
 
-  updateModel({ editorContent, editorMode }) {
+  updateModel({ editorContent, editorMode, viewState }) {
     this.editor.setModel(
       window.monaco.editor.createModel(editorContent, editorMode),
     );
+
+    if (!isEmpty(viewState)) {
+      this.editor.restoreViewState(viewState);
+    }
   }
 }
 
