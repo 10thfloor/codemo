@@ -61,9 +61,6 @@ export default class Example {
     });
 
     module.on('saveFile', (event, fetchId, filename, fileContents) => {
-      console.log('filename', filename);
-      console.log('fileContents', fileContents);
-
       fs.writeFile(filename, fileContents, (err) => {
         if (err) {
           this.module.respond('saveFile', fetchId, 'Could not save file');

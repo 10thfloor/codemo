@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const saveFile = (filePath, editorContent) => {
-  console.log('Saving ' + filePath);
   Desktop.fetch('main', 'saveFile', 10000, filePath, editorContent).then(() => {
     console.log('SAVED!');
   }, (error) => {
