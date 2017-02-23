@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'react-komposer';
 import { connect } from 'react-redux';
 
-import { Row, Column, Flex } from 'glamor/jsxstyle';
+import { Flex } from 'glamor/jsxstyle';
 
 import LocalEditor from './components/localEditorComponent';
 import StreamEditor from './components/streamEditorComponent';
@@ -46,7 +46,6 @@ function editorContainer(props, onData) {
 
 const mapStateToProps = state => ({
   filePath: state.editor.localEditor.filePath,
-  currentStream: state.editor.currentStream,
 });
 
 export const EditorSplitPane = connect(mapStateToProps)(compose(editorContainer)(Editors));

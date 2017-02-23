@@ -33,7 +33,7 @@ class StreamEditorComponent extends CodemoEditor {
         _get(this.props.currentStream, 'id'),
         this.editor.getValue(),
         this.props.editorMode,
-        this.editor.saveViewState()
+        this.editor.saveViewState(),
       );
     });
   }
@@ -82,7 +82,7 @@ class StreamEditorComponent extends CodemoEditor {
 
     if (this.shouldUpdateComponentWithStream(leader) && editorContent !== undefined && editorMode !== undefined) {
       this.initialStreamLoadComplete = true;
-      this.updateModel({ editorContent, editorMode, viewState });
+      this.setModel({ editorContent, editorMode, viewState });
     }
   }
 
@@ -94,6 +94,10 @@ class StreamEditorComponent extends CodemoEditor {
     if (!this.props.leaderUser) return 'No one';
     if (this.props.leaderUser._id === Meteor.userId()) return 'YOU';
     return this.props.leaderUser.username;
+  }
+
+  updateTextContent(text) {
+    this.editor.executeEdits('stream-editor-update', [{ identifier: 'insert', range: null, text, forceMoveMarkers: true }]);
   }
 
   render() {
