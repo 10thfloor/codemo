@@ -1,4 +1,9 @@
+.DS_Store
 node_modules/
 
 version.desktop
 .vscode
+
+.desktop-installer
+.desktop-package
+codemo.tar.gz

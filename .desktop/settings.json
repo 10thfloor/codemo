@@ -63,8 +63,8 @@
                 { "x": 63, "y": 190, "type": "file" }
             ],
             "window": {
-                "width": 480,
-                "height": 300
+                "width": 1280,
+                "height": 800
             }
         }    },
     "packagerOptions": {
