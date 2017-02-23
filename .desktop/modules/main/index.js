@@ -59,6 +59,15 @@ export default class Example {
       const fileContent = fs.readFileSync(testArg, { encoding: 'utf8' });
       this.module.respond('loadFile', fetchId, fileContent);
     });
+
+    module.on('saveFile', (event, fetchId, filename, fileContents) => {
+      fs.writeFile(filename, fileContents, (err) => {
+        if (err) {
+          this.module.respond('saveFile', fetchId, 'Could not save file');
+        }
+        this.module.respond('saveFile', fetchId, 'File Saved!');
+      });
+    });
   }
 
   showFilePicker(fetchId) {
