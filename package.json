@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "electron-react-devtools": "^0.4.0",
     "eslint": "^3.13.1",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-import-resolver-meteor": "^0.3.4",

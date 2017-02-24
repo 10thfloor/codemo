@@ -1,6 +1,8 @@
 import 'glamor/reset';
 
 import { Meteor } from 'meteor/meteor';
+import { EventEmitter } from 'meteor/raix:eventemitter';
+
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -17,6 +19,8 @@ import Overwatch from './routes/overwatch';
 import PrivateRoute from './components/private-route';
 
 injectTapEventPlugin();
+
+Events = new EventEmitter();
 
 class AppComponent extends Component {
   render() {

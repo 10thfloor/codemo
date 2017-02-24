@@ -15,7 +15,7 @@ const piStyle = {
 
 const Welcome = ({ push }) => (
   <Column alignItems="center" justifyContent="center" style={{ height: '100%' }}>
-    <p>Hi, { Meteor.user().username }!</p>
+    <p>Hi, { Meteor.user() && Meteor.user().username }!</p>
     <JoinStreamForm stackVertical onSubmitSuccess={() => push('/workspace')} />
     <Link to="/overwatch" style={piStyle}>π</Link>
   </Column>

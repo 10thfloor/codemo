@@ -4,38 +4,8 @@ import isEmpty from 'is-empty';
 export default class CodemoEditor extends Component {
 
   componentDidMount() {
-    this.initMonaco();
-    window.addEventListener('resize', this.updateDimensions.bind(this));
-  }
-
-  componentWillUnMount() {
-    this.destroyMonaco();
-    window.removeEventListener('resize', this.updateDimensions.bind(this));
-  }
-
-  initMonaco() {
     this.createEditor();
-  }
-
-  createEditor(canWrite = false, theme = 'vs-dark') {
-    const mount = document.getElementById(this.container);
-
-    while (mount.firstChild) {
-      mount.removeChild(mount.firstChild);
-    }
-    const readOnly = !(this.local || canWrite);
-
-    this.editor = window.monaco.editor.create(mount, {
-      lineNumbers: true,
-      readOnly,
-      theme,
-    });
-
-    const { editorContent, editorMode } = this.props;
-    this.updateModel({ editorContent, editorMode });
-
-    // Provide a callback for functions that need to run after monaco initMonaco init
-    this.monacoDidInit();
+    window.addEventListener('resize', this.updateDimensions.bind(this));
   }
 
   // Provide an interface for a callback that runs after initMonaco
@@ -49,7 +19,7 @@ export default class CodemoEditor extends Component {
     if (typeof this.editor !== 'undefined') this.editor.destroy();
   }
 
-  updateModel({ editorContent, editorMode, viewState }) {
+  setModel({ editorContent, editorMode, viewState }) {
     this.editor.setModel(
       window.monaco.editor.createModel(editorContent, editorMode),
     );
@@ -57,6 +27,29 @@ export default class CodemoEditor extends Component {
     if (!isEmpty(viewState)) {
       this.editor.restoreViewState(viewState);
     }
+  }
+
+  componentWillUnMount() {
+    this.destroyMonaco();
+    window.removeEventListener('resize', this.updateDimensions.bind(this));
+  }
+
+  createEditor(canWrite = false, theme = 'vs-dark') {
+    const mount = document.getElementById(this.container);
+
+    while (mount.firstChild) {
+      mount.removeChild(mount.firstChild);
+    }
+
+    const readOnly = !(this.container === 'local_monaco_container');
+
+    this.editor = window.monaco.editor.create(mount, {
+      lineNumbers: true,
+      readOnly,
+      theme,
+    });
+
+    this.monacoDidInit();
   }
 }
 

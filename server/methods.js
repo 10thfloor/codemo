@@ -8,23 +8,36 @@ const defaultStreamContent = {
   name: 'DEFAULT NAME',
 };
 
-function setStreamEditorContent(id, fileContent, editorMode, viewState = {}) {
+function setStreamEditorContent(id, fileContent, editorMode, viewState = {}, modelId) {
   if (!id) return;
 
   check(id, String);
   check(fileContent, String);
   check(editorMode, String);
   check(viewState, Object);
+  check(modelId, String);
 
-  delete viewState.contributionsState['editor.contrib.folding'];
+  // Mongo won't store dotted object properties
+  if (viewState.contributionsState) delete viewState.contributionsState['editor.contrib.folding'];
 
   StreamEditorContent.update(id, {
     $set: {
       text: fileContent,
       mode: editorMode,
       viewState,
+      modelId,
     },
   });
+}
+
+function updateStreamEditorContent(id, text, viewState) {
+  check(id, String);
+  check(text, String);
+
+  // Mongo won't store dotted object properties
+  if (viewState.contributionsState) delete viewState.contributionsState['editor.contrib.folding'];
+
+  StreamEditorContent.update(id, { $set: { text, viewState } });
 }
 
 function createStream(name) {
@@ -73,6 +86,7 @@ function setLeader(streamId, userId) {
 export {
   createStream,
   setStreamEditorContent,
+  updateStreamEditorContent,
   joinStream,
   setLeader,
 };

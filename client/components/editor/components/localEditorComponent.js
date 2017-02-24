@@ -16,22 +16,15 @@ class LocalEditorComponent extends CodemoEditor {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { editorContent, editorMode } = nextProps;
 
-    if (editorContent !== undefined && editorMode !== undefined) {
-      this.updateModel({ editorContent, editorMode });
-    }
   }
 
   monacoDidInit() {
-    if (!this.editor.getValue()) {
-      const editorContent = 'Welcome to Codemo!\n\nThis is a new text file. \n\nTo use your own, click the Folder icon above.';
-      this.updateModel({ editorContent, editorMode: 'text' });
-    }
+    const { editorContent, editorMode } = this.props;
+    this.setModel({ editorContent, editorMode });
   }
 
   getActiveFilename() {
-    if (!this.props.filePath) return 'untitled.txt';
     const parts = this.props.filePath.split('/');
     return parts[parts.length - 1];
   }
@@ -50,10 +43,10 @@ class LocalEditorComponent extends CodemoEditor {
   }
 }
 
-const mapStateToProps = state => ({
-  editorContent: state.editor.localEditor.editorContent,
-  editorMode: state.editor.localEditor.editorMode,
-  filePath: state.editor.localEditor.filePath,
-});
+const mapStateToProps = state => (
+  Object.assign(
+    {},
+    state.editor.localEditor,
+  ));
 
 export default connect(mapStateToProps)(LocalEditorComponent);
