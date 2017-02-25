@@ -12,7 +12,6 @@ class LocalEditorComponent extends CodemoEditor {
   constructor() {
     super();
     this.container = 'local_monaco_container';
-    this.local = true;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,10 +42,13 @@ class LocalEditorComponent extends CodemoEditor {
   }
 }
 
-const mapStateToProps = state => (
-  Object.assign(
-    {},
-    state.editor.localEditor,
-  ));
+const mapStateToProps = state => {
+  const { localEditor } = state.editor;
+  return {
+    editorContent: localEditor.editorContent,
+    editorMode: localEditor.editorMode,
+    filePath: localEditor.filePath,
+  };
+};
 
 export default connect(mapStateToProps)(LocalEditorComponent);

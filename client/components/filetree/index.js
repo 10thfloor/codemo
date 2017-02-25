@@ -7,7 +7,7 @@ import { Treebeard } from 'react-treebeard';
 import { css } from 'glamor';
 
 import { fileExtensionMap } from '../../../imports/util/file-ext-map';
-import { setLocalEditorContent } from '../editor/editorActions';
+import { setLocalEditorContent } from '../../../imports/redux/modules/editor';
 
 const rule = css({
   color: 'red',

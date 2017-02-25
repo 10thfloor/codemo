@@ -7,8 +7,6 @@ import { Row, Column, Flex } from "glamor/jsxstyle";
 import Snackbar from "material-ui/Snackbar";
 import CodemoEditor from "./codemoEditor";
 
-
-
 class StreamEditorComponent extends CodemoEditor {
   constructor() {
     super();
@@ -20,7 +18,8 @@ class StreamEditorComponent extends CodemoEditor {
   }
 
   monacoDidInit() {
-
+    const { editorContent, editorMode } = this.props;
+    this.setModel({ editorContent, editorMode });
   }
 
   shouldEnableEditing(leader) {
@@ -61,7 +60,7 @@ class StreamEditorComponent extends CodemoEditor {
 
   updateTextContent(text) {
     this.editor.executeEdits('stream-editor-update', [
-      { identifier: 'insert', range: new window.monaco.Range(), text, forceMoveMarkers: true }
+      { identifier: 'insert', range: new window.monaco.Range(), text, forceMoveMarkers: true },
     ]);
   }
 
@@ -89,7 +88,7 @@ class StreamEditorComponent extends CodemoEditor {
           </Column>
 
           <Column>
-            Leader: {this.getLeaderUsername()}
+            { this.props.leader && `Leader: ${this.getLeaderUsername()}`}
           </Column>
         </Row>
       </Column>
@@ -101,12 +100,16 @@ const streamEditorContainer = (props, onData) => {
   onData(null, props);
 };
 
-const mapStateToProps = state => (
-  Object.assign({
-    currentStream: state.editor.currentStream,
-  },
-  state.editor.streamEditor,
-));
+const mapStateToProps = state => {
+  const { streamEditor } = state.editor;
+  const { currentStream } = state.streams;
+  return {
+    currentStream,
+    leader: streamEditor.leader,
+    editorMode: streamEditor.editorMode,
+    editorContent: streamEditor.editorContent,
+  };
+};
 
 const container = compose(streamEditorContainer)(StreamEditorComponent);
 

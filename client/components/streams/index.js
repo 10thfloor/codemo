@@ -4,15 +4,13 @@ import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 import { Block } from 'glamor/jsxstyle';
 
-import { StreamEditorContent } from '../../../imports/collections';
-import trackerLoader from '../../../imports/tracker-loader';
-import { setCurrentStream } from '../editor/editorActions';
+import { setCurrentStream } from '../../../imports/redux/modules/streams';
 
 const streamsComponent = ({ streams, setCurrentStream }) => (
   <Block padding=".5rem">
     <h2>Streams</h2>
     <ul className="small-text">
-      {
+      { streams.length ?
         streams.map(stream => (
           <li key={stream._id}>
             <a href onClick={() => setCurrentStream(stream._id)}>
@@ -20,26 +18,29 @@ const streamsComponent = ({ streams, setCurrentStream }) => (
             </a>
           </li>
         ))
+        : '☹️ There are no streams.'
       }
     </ul>
   </Block>
 );
 
 function streamsContainer(props, onData) {
-  if (Meteor.subscribe('recentstreams').ready()) {
-    const streams = StreamEditorContent.find().map(document => document);
-    onData(null, { streams });
-  }
+  onData(null, props);
 }
-
-const mapStateToProps = state => ({
-  currentStream: state.editor.currentStream,
-});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setCurrentStream,
 }, dispatch);
 
-const container = compose(trackerLoader(streamsContainer))(streamsComponent);
+const mapStateToProps = (state) => {
+  const {currentStream, streamUsers, streams } = state.streams;
+  return {
+    currentStream,
+    streamUsers,
+    streams,
+  };
+};
+
+const container = compose(streamsContainer)(streamsComponent);
 
 export default connect(mapStateToProps, mapDispatchToProps)(container);
