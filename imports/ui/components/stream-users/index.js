@@ -10,14 +10,14 @@ const setLeader = (streamId, userId) => {
   Meteor.call('setLeader', streamId, userId);
 };
 
-const streamUsersComponent = ({ currentStream, streamUsers }) => (
+const streamUsersComponent = ({ currentStreamLeader, currentStreamUsers }) => (
   <Block padding=".5rem">
     <h2>Users</h2>
     <ul className="small-text">
-      { streamUsers.length ?
-        streamUsers.map(user => (
+      { currentStreamUsers.length ?
+        currentStreamUsers.map(user => (
           <li key={user._id}>
-            <a href onClick={() => setLeader(currentStream.id, user._id)}>
+            <a href onClick={() => setLeader(currentStreamLeader._id, user._id)}>
               { user.username }
             </a>
           </li>
@@ -37,10 +37,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 const mapStateToProps = (state) => {
-  const { currentStream, streamUsers } = state.streams;
+  const { currentStreamLeader, currentStreamUsers } = state.editor;
   return {
-    currentStream,
-    streamUsers,
+    currentStreamLeader,
+    currentStreamUsers,
   };
 };
 

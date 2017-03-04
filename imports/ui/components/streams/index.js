@@ -6,12 +6,12 @@ import { Block } from 'glamor/jsxstyle';
 
 import { setCurrentStream } from '../../../redux/modules/editor';
 
-const streamsComponent = ({ streams, setCurrentStream }) => (
+const streamsComponent = ({ availableStreams, setCurrentStream }) => (
   <Block padding=".5rem">
     <h2>Streams</h2>
     <ul className="small-text">
-      { streams.length ?
-        streams.map(stream => (
+      { availableStreams.length ?
+        availableStreams.map(stream => (
           <li key={stream._id}>
             <a href onClick={() => setCurrentStream(stream._id)}>
               { stream.name || stream._id }
@@ -33,11 +33,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 const mapStateToProps = (state) => {
-  const { currentStream, streamUsers, streams } = state.editor;
+  const { availableStreams } = state.editor;
   return {
-    currentStream,
-    streamUsers,
-    streams,
+    availableStreams,
   };
 };
 
