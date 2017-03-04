@@ -1,7 +1,6 @@
 import 'glamor/reset';
 
 import { Meteor } from 'meteor/meteor';
-import { EventEmitter } from 'meteor/raix:eventemitter';
 
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
@@ -11,16 +10,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { store } from '../imports/redux/store';
-import Login from './routes/login';
-import Register from './routes/register';
-import Welcome from './routes/welcome';
-import WorkSpace from './routes/workspace';
-import Overwatch from './routes/overwatch';
-import PrivateRoute from './components/private-route';
+import Login from '../imports/ui/routes/login';
+import Register from '../imports/ui/routes/register';
+import Welcome from '../imports/ui/routes/welcome';
+import WorkSpace from '../imports/ui/routes/workspace';
+import Overwatch from '../imports/ui/routes/overwatch';
+import PrivateRoute from '../imports/ui/components/private-route';
 
 injectTapEventPlugin();
-
-Events = new EventEmitter();
 
 class AppComponent extends Component {
   render() {

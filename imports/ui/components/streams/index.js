@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 import { Block } from 'glamor/jsxstyle';
 
-import { setCurrentStream } from '../../../imports/redux/modules/streams';
+import { setCurrentStream } from '../../../redux/modules/editor';
 
 const streamsComponent = ({ streams, setCurrentStream }) => (
   <Block padding=".5rem">
@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 const mapStateToProps = (state) => {
-  const {currentStream, streamUsers, streams } = state.streams;
+  const { currentStream, streamUsers, streams } = state.editor;
   return {
     currentStream,
     streamUsers,

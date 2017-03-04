@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
-import _get from 'lodash.get';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Arrow from 'material-ui/svg-icons/action/trending-flat';

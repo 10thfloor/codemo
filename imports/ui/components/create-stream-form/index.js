@@ -5,7 +5,7 @@ import Gandalf from 'gandalf-validator';
 import { Flex } from 'glamor/jsxstyle';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { setCurrentStream } from '../../../imports/redux/modules/streams';
+import { setCurrentStream } from '../../../redux/modules/editor';
 
 class JoinStreamForm extends Gandalf {
   constructor() {

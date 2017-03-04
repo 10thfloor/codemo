@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 import { Block } from 'glamor/jsxstyle';
 
-import { setCurrentStreamLeader } from '../../../imports/redux/modules/editor';
+import { setCurrentStreamLeader } from '../../../redux/modules/editor';
 
 const setLeader = (streamId, userId) => {
   Meteor.call('setLeader', streamId, userId);

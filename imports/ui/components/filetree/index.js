@@ -4,23 +4,8 @@ import { compose } from 'react-komposer';
 import { bindActionCreators } from 'redux';
 import { Treebeard } from 'react-treebeard';
 
-import { css } from 'glamor';
-
-import { fileExtensionMap } from '../../../imports/util/file-ext-map';
-import { setLocalEditorContent } from '../../../imports/redux/modules/editor';
-
-const rule = css({
-  color: 'red',
-  ':hover': {
-    color: 'pink'
-  },
-  '@media(min-width: 300px)': {
-    color: 'green',
-    ':hover': {
-      color: 'yellow'
-    }
-  }
-})
+import { fileExtensionMap } from '../../../util/file-ext-map';
+import { setLocalEditorContent } from '../../../redux/modules/editor';
 
 class FileTreeComponent extends Component {
 

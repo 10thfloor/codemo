@@ -5,9 +5,9 @@ import { compose } from 'react-komposer';
 import { Row, Column, Flex } from 'glamor/jsxstyle';
 import Snackbar from 'material-ui/Snackbar';
 
-import trackerLoader from '../../../../imports/util/tracker-loader';
-import { StreamEditorContent } from '../../../../imports/collections';
-import { setStreamEditorContent } from '../../../../imports/redux/modules/editor';
+import trackerLoader from '../../../../util/tracker-loader';
+import { StreamEditorContent } from '../../../../collections';
+import { setStreamEditorContent } from '../../../../redux/modules/editor';
 
 import CodemoEditor from './codemoEditor';
 
