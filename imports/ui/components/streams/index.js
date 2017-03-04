@@ -1,19 +1,20 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { compose } from 'react-komposer';
 import { Block } from 'glamor/jsxstyle';
 
-import { setCurrentStream } from '../../../redux/modules/editor';
+import { StreamEditorContent } from '../../../collections';
+import { changeCurrentStream, updateAvailableStreamsList } from '../../../redux/modules/editor';
+import trackerLoader from '../../../util/tracker-loader';
 
-const streamsComponent = ({ availableStreams, setCurrentStream }) => (
+const StreamsComponent = ({ availableStreams, dispatchSetCurrentStream }) => (
   <Block padding=".5rem">
     <h2>Streams</h2>
     <ul className="small-text">
       { availableStreams.length ?
         availableStreams.map(stream => (
           <li key={stream._id}>
-            <a href onClick={() => setCurrentStream(stream._id)}>
+            <a href onClick={() => dispatchSetCurrentStream(stream._id)}>
               { stream.name || stream._id }
             </a>
           </li>
@@ -24,14 +25,6 @@ const streamsComponent = ({ availableStreams, setCurrentStream }) => (
   </Block>
 );
 
-function streamsContainer(props, onData) {
-  onData(null, props);
-}
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  setCurrentStream,
-}, dispatch);
-
 const mapStateToProps = (state) => {
   const { availableStreams } = state.editor;
   return {
@@ -39,6 +32,26 @@ const mapStateToProps = (state) => {
   };
 };
 
-const container = compose(streamsContainer)(streamsComponent);
+function container(props, onData) {
 
-export default connect(mapStateToProps, mapDispatchToProps)(container);
+  if (Meteor.subscribe('recentstreams').ready()) {
+    const streams = StreamEditorContent.find().fetch();
+    props.dispatch(updateAvailableStreamsList(streams));
+  }
+
+  function dispatchSetCurrentStream(_id) {
+    const content = StreamEditorContent.findOne({ _id });
+
+    if (content) {
+      props.dispatch(changeCurrentStream(_id));
+    }
+  }
+
+  onData(null, {
+    dispatchSetCurrentStream,
+  });
+}
+
+const component = connect(mapStateToProps)(StreamsComponent);
+export default connect()(compose(trackerLoader(container))(component));
+

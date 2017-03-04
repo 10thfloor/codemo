@@ -1,8 +1,9 @@
 const SET_LOCAL_EDITOR_CONTENT = 'SET_LOCAL_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_CONTENT = 'SET_STREAM_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_LEADER = 'UPDATE_STREAM_EDITOR_LEADER';
-const UPDATE_STREAM_EDITOR_USERS = 'UPDATE_STREAM_EDITOR_USERS'
+const UPDATE_STREAM_EDITOR_USERS = 'UPDATE_STREAM_EDITOR_USERS';
 const UPDATE_AVAILABLE_STREAMS_LIST = 'UPDATE_AVAILABLE_STREAMS_LIST';
+const CHANGE_CURRENT_STREAM = 'CHANGE_CURRENT_STREAM';
 
 export default function reducer(state = {
   localEditor: {
@@ -25,9 +26,10 @@ export default function reducer(state = {
   availableStreams: [],
   currentStreamUsers: [],
   currentStreamLeader: undefined,
-},
-  action = {}) {
+}, action = {}) {
   switch (action.type) {
+    case CHANGE_CURRENT_STREAM:
+      return { ...state, currentStream: action.payload };
     case SET_LOCAL_EDITOR_CONTENT:
       return { ...state, localEditor: action.payload };
     case SET_STREAM_EDITOR_CONTENT:
@@ -42,12 +44,16 @@ export default function reducer(state = {
   }
 }
 
-export function setLocalEditorContent({ editorContent, editorMode, filePath }) {
-  return { type: SET_LOCAL_EDITOR_CONTENT, payload: { editorContent, editorMode, filePath } };
+export function changeCurrentStream(streamId) {
+  return { type: CHANGE_CURRENT_STREAM, payload: streamId };
 }
 
-export function setStreamEditorContent({ editorContent, editorMode }) {
-  return { type: SET_STREAM_EDITOR_CONTENT, payload: { editorContent, editorMode } };
+export function setLocalEditorContent(newLocalEditorContent) {
+  return { type: SET_LOCAL_EDITOR_CONTENT, payload: newLocalEditorContent };
+}
+
+export function setStreamEditorContent(newStreamEditorContent) {
+  return { type: SET_STREAM_EDITOR_CONTENT, payload: newStreamEditorContent };
 }
 
 export function setStreamEditorLeader(user) {

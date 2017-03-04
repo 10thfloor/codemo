@@ -55,7 +55,7 @@ class StreamEditorComponent extends CodemoEditor {
 
 
   componentWillReceiveProps(nextProps) {
-
+    
   }
 
   getLeaderUsername() {
