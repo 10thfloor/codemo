@@ -43,9 +43,10 @@ class LocalEditorComponent extends CodemoEditor {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { localEditor } = state.editor;
   return {
+    editorModelId: localEditor.editorModelId,
     editorContent: localEditor.editorContent,
     editorMode: localEditor.editorMode,
     filePath: localEditor.filePath,
@@ -53,3 +54,4 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(LocalEditorComponent);
+
