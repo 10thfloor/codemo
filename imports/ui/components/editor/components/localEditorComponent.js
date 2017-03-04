@@ -7,21 +7,24 @@ import CodemoEditor from './codemoEditor';
 import TakeOverStreamButton from './takeOverStream';
 import SaveFileButton from './saveFileButton';
 
-class LocalEditorComponent extends CodemoEditor {
+import { initLocalEditorModel } from '../../../../redux/modules/editor';
 
+class LocalEditorComponent extends CodemoEditor {
   constructor() {
     super();
     this.container = 'local_monaco_container';
   }
 
-  componentWillReceiveProps(nextProps) {
-
+  monacoDidInit() {
+    this.props.dispatch(initLocalEditorModel(window.monaco.editor));
   }
 
-  monacoDidInit() {
-    let { editorModel } = this.props;
-    if (!editorModel) editorModel = window.monaco.editor.createModel('Welcome to Codemo!', 'text');
-    this.setModel({ editorModel });
+  componentWillReceiveProps(nextProps) {
+    const { editorModel, viewState } = nextProps;
+    const currentEditorModel = this.props.editorModel;
+    if (!currentEditorModel || editorModel.id !== currentEditorModel.id) {
+      this.setModel({ editorModel, viewState });
+    }
   }
 
   getActiveFilename() {
@@ -46,9 +49,7 @@ class LocalEditorComponent extends CodemoEditor {
 const mapStateToProps = (state) => {
   const { localEditor } = state.editor;
   return {
-    editorModelId: localEditor.editorModelId,
-    editorContent: localEditor.editorContent,
-    editorMode: localEditor.editorMode,
+    editorModel: localEditor.editorModel,
     filePath: localEditor.filePath,
   };
 };

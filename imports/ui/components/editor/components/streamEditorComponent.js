@@ -7,7 +7,7 @@ import Snackbar from 'material-ui/Snackbar';
 
 import trackerLoader from '../../../../util/tracker-loader';
 import { StreamEditorContent } from '../../../../collections';
-import { setStreamEditorContent } from '../../../../redux/modules/editor';
+import { setStreamEditorContent, initStreamEditorModel } from '../../../../redux/modules/editor';
 
 import CodemoEditor from './codemoEditor';
 
@@ -22,9 +22,15 @@ class StreamEditorComponent extends CodemoEditor {
   }
 
   monacoDidInit() {
-    let { editorModel } = this.props;
-    if (!editorModel) editorModel = window.monaco.editor.createModel('There is no active stream.', 'text');
-    this.setModel({ editorModel });
+    this.props.dispatch(initStreamEditorModel(window.monaco.editor));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editorModel, viewState } = nextProps;
+    const currentEditorModel = this.props.editorModel;
+    if (!currentEditorModel || editorModel.id !== currentEditorModel.id) {
+      this.setModel({ editorModel, viewState });
+    }
   }
 
   shouldEnableEditing(leader) {
@@ -51,11 +57,6 @@ class StreamEditorComponent extends CodemoEditor {
   disableEditing() {
     this.active = false;
     this.handleLeaderMessageClose();
-  }
-
-
-  componentWillReceiveProps(nextProps) {
-    
   }
 
   getLeaderUsername() {
@@ -126,7 +127,7 @@ function container(props, onData) {
   if (Meteor.subscribe('streameditorcontent', props.currentStream).ready()) {
     const stream = StreamEditorContent.findOne({ _id: props.currentStream });
     if (stream) {
-      const editorModel = window.monaco.editor.createModel(stream.editorContent, stream.editorMode)
+      const editorModel = window.monaco.editor.createModel(stream.text, stream.mode);
 
       const update = {
         editorModel,
@@ -139,10 +140,11 @@ function container(props, onData) {
       };
 
       props.dispatch(setStreamEditorContent(update));
+      onData(null, props);
+    } else {
+      onData(null, props);
     }
   }
-
-  onData(null, props);
 }
 
 const component = connect(mapStateToEditorComponentProps)(StreamEditorComponent);
