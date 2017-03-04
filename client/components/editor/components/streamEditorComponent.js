@@ -1,11 +1,15 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose } from "react-komposer";
-import _get from "lodash.get";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'react-komposer';
 
-import { Row, Column, Flex } from "glamor/jsxstyle";
-import Snackbar from "material-ui/Snackbar";
-import CodemoEditor from "./codemoEditor";
+import { Row, Column, Flex } from 'glamor/jsxstyle';
+import Snackbar from 'material-ui/Snackbar';
+
+import trackerLoader from '../../../../imports/util/tracker-loader';
+import { StreamEditorContent } from '../../../../imports/collections';
+import { setStreamEditorContent } from '../../../../imports/redux/modules/editor';
+
+import CodemoEditor from './codemoEditor';
 
 class StreamEditorComponent extends CodemoEditor {
   constructor() {
@@ -70,16 +74,16 @@ class StreamEditorComponent extends CodemoEditor {
       <Column
         flex="1"
       >
-        <Row style={{ height: "93%" }} id={this.container} />
+        <Row style={{ height: '93%' }} id={this.container} />
         <Row
-          style={{ height: "7%" }}
+          style={{ height: '7%' }}
           alignItems="center"
           justifyContent="space-between"
           padding="0 1rem"
         >
           <Column>
-            <Flex> {this.props.currentStream.name || "No Active Stream"}</Flex>
-            <small>{this.props.currentStream.id}</small>
+            <Flex> {this.props.streamName || 'No Active Stream'}</Flex>
+            <small>{this.props.streamId }</small>
             <Snackbar
               open={this.state.showLeaderMessage}
               message="You are now in control of the stream!"
@@ -97,21 +101,49 @@ class StreamEditorComponent extends CodemoEditor {
   }
 }
 
-const streamEditorContainer = (props, onData) => {
-  onData(null, props);
+const mapStateToEditorComponentProps = (state) => {
+  const { streamEditor, currentStreamLeader } = state.editor;
+
+  const streamEditorProps = {
+    leader: currentStreamLeader,
+    streamId: streamEditor._id,
+    streamName: streamEditor.name,
+    editorModel: streamEditor.editorModel,
+    viewState: streamEditor.viewState,
+  };
+
+  return streamEditorProps;
 };
 
-const mapStateToProps = state => {
-  const { streamEditor } = state.editor;
-  const { currentStream } = state.streams;
+const mapStateToEditorContainerProps = (state) => {
+  const { currentStream } = state.editor;
   return {
     currentStream,
-    leader: streamEditor.leader,
-    editorMode: streamEditor.editorMode,
-    editorContent: streamEditor.editorContent,
   };
 };
 
-const container = compose(streamEditorContainer)(StreamEditorComponent);
+function container(props, onData) {
+  if (Meteor.subscribe('streameditorcontent', props.currentStream).ready()) {
+    const stream = StreamEditorContent.findOne({ _id: props.currentStream });
+    if (stream) {
+      const editorModel = window.monaco.editor.createModel(stream.editorContent, stream.editorMode)
 
-export default connect(mapStateToProps)(container);
+      const update = {
+        editorModel,
+        _id: stream._id,
+        name: stream.name,
+        viewState: stream.viewState || {},
+        leader: stream.leader,
+        owner: stream.owner,
+        users: stream.users,
+      };
+
+      props.dispatch(setStreamEditorContent(update));
+    }
+  }
+
+  onData(null, props);
+}
+
+const component = connect(mapStateToEditorComponentProps)(StreamEditorComponent);
+export default connect(mapStateToEditorContainerProps)(compose(trackerLoader(container))(component));
