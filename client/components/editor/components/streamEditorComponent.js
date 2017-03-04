@@ -18,8 +18,9 @@ class StreamEditorComponent extends CodemoEditor {
   }
 
   monacoDidInit() {
-    const { editorContent, editorMode } = this.props;
-    this.setModel({ editorContent, editorMode });
+    let { editorModel } = this.props;
+    if (!editorModel) editorModel = window.monaco.editor.createModel('There is no active stream.', 'text');
+    this.setModel({ editorModel });
   }
 
   shouldEnableEditing(leader) {

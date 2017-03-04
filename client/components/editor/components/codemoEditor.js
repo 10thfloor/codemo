@@ -19,10 +19,8 @@ export default class CodemoEditor extends Component {
     if (typeof this.editor !== 'undefined') this.editor.destroy();
   }
 
-  setModel({ editorContent, editorMode, viewState }) {
-    this.editor.setModel(
-      window.monaco.editor.createModel(editorContent, editorMode),
-    );
+  setModel({ editorModel, viewState }) {
+    this.editor.setModel(editorModel);
 
     if (!isEmpty(viewState)) {
       this.editor.restoreViewState(viewState);

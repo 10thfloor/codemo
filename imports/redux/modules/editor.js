@@ -1,40 +1,43 @@
 const SET_LOCAL_EDITOR_CONTENT = 'SET_LOCAL_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_CONTENT = 'SET_STREAM_EDITOR_CONTENT';
-const UPDATE_STREAM_EDITOR_CONTENT = 'UPDATE_STREAM_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_LEADER = 'UPDATE_STREAM_EDITOR_LEADER';
-const ADD_STREAM_EDITOR_USER = 'ADD_STREAM_EDITOR_USER';
-const REMOVE_STREAM_EDITOR_USER = 'REMOVE_STREAM_EDITOR_USER';
+const UPDATE_STREAM_EDITOR_USERS = 'UPDATE_STREAM_EDITOR_USERS'
+const UPDATE_AVAILABLE_STREAMS_LIST = 'UPDATE_AVAILABLE_STREAMS_LIST';
 
 export default function reducer(state = {
   localEditor: {
-    editorContent: 'Welcome to Codemo!',
-    editorMode: 'text',
-    editorModelId: undefined,
+    editorModel: undefined,
     filePath: 'untitled.txt',
+    viewState: {},
   },
   streamEditor: {
-    editorContent: 'Please create a stream, or select one!',
-    editorMode: 'text',
-    editorModelId: undefined,
+    _id: undefined,
+    editorModel: undefined,
+    viewState: {},
     leader: undefined,
+    owner: undefined,
     users: [],
     focused: false,
     active: false,
     showLeaderMessage: false,
   },
-}, action = {}) {
+  currentStream: undefined,
+  availableStreams: [],
+  currentStreamUsers: [],
+  currentStreamLeader: undefined,
+},
+  action = {}) {
   switch (action.type) {
     case SET_LOCAL_EDITOR_CONTENT:
       return { ...state, localEditor: action.payload };
     case SET_STREAM_EDITOR_CONTENT:
       return { ...state, streamEditor: action.payload };
-    case UPDATE_STREAM_EDITOR_CONTENT:
-      return { ...state, streamEditor: { ...state.streamEditor, editorContent: action.payload } };
     case SET_STREAM_EDITOR_LEADER:
-      return { ...state, streamEditor: { ...state.streamEditor, leader: action.payload } };
-    case REMOVE_STREAM_EDITOR_USER:
-    case ADD_STREAM_EDITOR_USER:
-      return { ...state, streamEditor: { ...state.streamEditor, users: action.payload } };
+      return { ...state, currentStreamLeader: action.payload };
+    case UPDATE_STREAM_EDITOR_USERS:
+      return { ...state, currentSreamUsers: action.payload };
+    case UPDATE_AVAILABLE_STREAMS_LIST:
+      return { ...state, availableStreams: action.payload };
     default: return state;
   }
 }
@@ -47,18 +50,14 @@ export function setStreamEditorContent({ editorContent, editorMode }) {
   return { type: SET_STREAM_EDITOR_CONTENT, payload: { editorContent, editorMode } };
 }
 
-export function updateStreamEditorContent(text) {
-  return { type: UPDATE_STREAM_EDITOR_CONTENT, payload: text };
-}
-
 export function setStreamEditorLeader(user) {
   return { type: SET_STREAM_EDITOR_LEADER, payload: user };
 }
 
-export function removeStreamEditorUser(user) {
-  return { type: REMOVE_STREAM_EDITOR_USER, payload: user };
+export function updateStreamEditorUsers(users) {
+  return { type: UPDATE_STREAM_EDITOR_USERS, payload: users };
 }
 
-export function addStreamEditorUser(user) {
-  return { type: ADD_STREAM_EDITOR_USER, payload: user };
+export function updateAvailableStreamsList(streams) {
+  return { type: UPDATE_AVAILABLE_STREAMS_LIST, payload: streams };
 }

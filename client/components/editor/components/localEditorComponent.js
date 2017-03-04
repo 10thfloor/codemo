@@ -19,8 +19,9 @@ class LocalEditorComponent extends CodemoEditor {
   }
 
   monacoDidInit() {
-    const { editorContent, editorMode } = this.props;
-    this.setModel({ editorContent, editorMode });
+    let { editorModel } = this.props;
+    if (!editorModel) editorModel = window.monaco.editor.createModel('Welcome to Codemo!', 'text');
+    this.setModel({ editorModel });
   }
 
   getActiveFilename() {
