@@ -1,13 +1,13 @@
 
 export const initialEditorContent = {
   streamEditor: {
-    text: '// To begin, please Select a stream or create one.',
-    mode: 'javascript',
+    text: 'To begin, please Select a stream or create one.',
+    mode: 'text',
     name: 'DEFAULT NAME',
   },
   localEditor: {
-    text: '// Welcome to Codemo!',
-    mode: 'javascript',
+    text: 'Welcome to Codemo!',
+    mode: 'text',
   },
 };
 

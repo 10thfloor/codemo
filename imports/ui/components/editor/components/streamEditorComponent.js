@@ -9,6 +9,7 @@ import trackerLoader from '../../../../util/tracker-loader';
 import { StreamEditorContent } from '../../../../collections';
 import { setStreamEditorContent, initStreamEditorModel } from '../../../../redux/modules/editor';
 
+import { makeEditorModel } from '../../../../util/editor-model-factory';
 import CodemoEditor from './codemoEditor';
 
 class StreamEditorComponent extends CodemoEditor {
@@ -127,7 +128,7 @@ function container(props, onData) {
   if (Meteor.subscribe('streameditorcontent', props.currentStream).ready()) {
     const stream = StreamEditorContent.findOne({ _id: props.currentStream });
     if (stream) {
-      const editorModel = window.monaco.editor.createModel(stream.text, stream.mode);
+      const editorModel = makeEditorModel('stream', stream.text, stream.mode);
 
       const update = {
         editorModel,

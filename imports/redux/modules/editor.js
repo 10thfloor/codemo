@@ -1,4 +1,4 @@
-import { makeEditorModel } from '../../util/editorModelFactory';
+import { makeEditorModel } from '../../util/editor-model-factory';
 
 const SET_LOCAL_EDITOR_CONTENT = 'SET_LOCAL_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_CONTENT = 'SET_STREAM_EDITOR_CONTENT';
@@ -67,7 +67,15 @@ export function changeCurrentStream(streamId) {
 }
 
 export function setLocalEditorContent(newLocalEditorContent) {
-  return { type: SET_LOCAL_EDITOR_CONTENT, payload: newLocalEditorContent };
+  const { editorContent, editorMode, filePath, viewState } = newLocalEditorContent;
+  const editorModel = makeEditorModel('local', editorContent, editorMode);
+  return { type: SET_LOCAL_EDITOR_CONTENT,
+    payload: {
+      editorModel,
+      filePath,
+      viewState: viewState || {},
+    },
+  };
 }
 
 export function setStreamEditorContent(newStreamEditorContent) {

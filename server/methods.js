@@ -2,16 +2,15 @@ import { check } from 'meteor/check';
 import moment from 'moment';
 import { StreamEditorContent } from '../imports/collections';
 
-import { defaultEditorContent } from '../imports/util/editorModelFactory';
+import { defaultEditorContent } from '../imports/util/editor-model-factory';
 
-function setStreamEditorContent(id, fileContent, editorMode, viewState = {}, modelId) {
+function setStreamEditorContent(id, fileContent, editorMode, viewState = {}) {
   if (!id) return;
 
   check(id, String);
   check(fileContent, String);
   check(editorMode, String);
   check(viewState, Object);
-  check(modelId, String);
 
   // Mongo won't store dotted object properties
   if (viewState.contributionsState) delete viewState.contributionsState['editor.contrib.folding'];
@@ -21,7 +20,6 @@ function setStreamEditorContent(id, fileContent, editorMode, viewState = {}, mod
       text: fileContent,
       mode: editorMode,
       viewState,
-      modelId,
     },
   });
 }

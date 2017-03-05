@@ -39,7 +39,7 @@ class LocalEditorComponent extends CodemoEditor {
         <Row style={{ height: '7%' }} alignItems="center" justifyContent="space-between" padding="0 1rem">
           <p>{ this.getActiveFilename() }</p>
           <SaveFileButton getEditorContent={() => this.editor.getValue()} />
-          <TakeOverStreamButton getEditorContent={() => this.editor.getValue()} />
+          <TakeOverStreamButton localEditor={this.editor} />
         </Row>
       </Column>
     );

@@ -5,12 +5,18 @@ import { compose } from 'react-komposer';
 import RaisedButton from 'material-ui/RaisedButton';
 import Arrow from 'material-ui/svg-icons/action/trending-flat';
 
-const TakeOverStreamComponent = ({ leader }) => (
+const updateStreamContent = (editorContent, editorMode, currentStream) => {
+  Meteor.call('setStreamEditorContent', currentStream, editorContent, editorMode);
+};
+
+const TakeOverStreamComponent = ({ leader, localEditor, currentStream }) => (
   <RaisedButton
     primary
     labelPosition="before"
-    disabled={leader !== Meteor.userId()}
-    onTouchTap={() => {}}
+    disabled={!currentStream || leader && leader._id !== Meteor.userId()}
+    onTouchTap={() => {
+      updateStreamContent(localEditor.getValue(), localEditor.getModel().getModeId(), currentStream);
+    }}
     icon={<Arrow />}
   />
 );
@@ -20,7 +26,8 @@ function takeOverStreamContainer(props, onData) {
 }
 
 const mapStateToProps = state => ({
-  leader: state.editor.streamEditor.leader,
+  currentStream: state.editor.currentStream,
+  leader: state.editor.currentStreamLeader,
 });
 
 const container = compose(takeOverStreamContainer)(TakeOverStreamComponent);
