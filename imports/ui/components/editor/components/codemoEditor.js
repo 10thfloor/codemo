@@ -2,7 +2,6 @@ import { Component } from 'react';
 import isEmpty from 'is-empty';
 
 export default class CodemoEditor extends Component {
-
   componentDidMount() {
     this.createEditor();
     window.addEventListener('resize', this.updateDimensions.bind(this));

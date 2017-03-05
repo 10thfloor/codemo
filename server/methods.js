@@ -2,11 +2,7 @@ import { check } from 'meteor/check';
 import moment from 'moment';
 import { StreamEditorContent } from '../imports/collections';
 
-const defaultStreamContent = {
-  text: '// Welcome to codemo!',
-  mode: 'javascript',
-  name: 'DEFAULT NAME',
-};
+import { defaultEditorContent } from '../imports/util/editorModelFactory';
 
 function setStreamEditorContent(id, fileContent, editorMode, viewState = {}, modelId) {
   if (!id) return;
@@ -46,7 +42,7 @@ function createStream(name) {
   check(name, String);
 
   const streamData = Object.assign(
-    defaultStreamContent, {
+    defaultEditorContent.streamEditor, {
       name,
       owner: this.userId,
       leader: this.userId,

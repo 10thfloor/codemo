@@ -5,7 +5,7 @@ import Gandalf from 'gandalf-validator';
 import { Flex } from 'glamor/jsxstyle';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { setCurrentStream } from '../../../redux/modules/editor';
+import { changeCurrentStream } from '../../../redux/modules/editor';
 
 class JoinStreamForm extends Gandalf {
   constructor() {
@@ -33,7 +33,7 @@ class JoinStreamForm extends Gandalf {
         console.log(err);
         return;
       }
-      this.props.setCurrentStream({ id, name: data.streamName });
+      this.props.changeCurrentStream(id);
     });
   }
 
@@ -52,7 +52,7 @@ class JoinStreamForm extends Gandalf {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  setCurrentStream,
+  changeCurrentStream,
 }, dispatch);
 
 export default connect(null, mapDispatchToProps)(JoinStreamForm);

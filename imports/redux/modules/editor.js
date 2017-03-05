@@ -1,3 +1,5 @@
+import { makeEditorModel } from '../../util/editorModelFactory';
+
 const SET_LOCAL_EDITOR_CONTENT = 'SET_LOCAL_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_CONTENT = 'SET_STREAM_EDITOR_CONTENT';
 const SET_STREAM_EDITOR_LEADER = 'UPDATE_STREAM_EDITOR_LEADER';
@@ -43,20 +45,20 @@ export default function reducer(state = {
     case SET_STREAM_EDITOR_LEADER:
       return { ...state, currentStreamLeader: action.payload };
     case UPDATE_STREAM_EDITOR_USERS:
-      return { ...state, currentSreamUsers: action.payload };
+      return { ...state, currentStreamUsers: action.payload };
     case UPDATE_AVAILABLE_STREAMS_LIST:
       return { ...state, availableStreams: action.payload };
     default: return state;
   }
 }
 
-export function initStreamEditorModel(editor) {
-  const editorModel = editor.createModel('No stream selected.', 'text');
+export function initStreamEditorModel() {
+  const editorModel = makeEditorModel('stream');
   return { type: INIT_STREAM_EDITOR_MODEL, payload: editorModel };
 }
 
-export function initLocalEditorModel(editor) {
-  const editorModel = editor.createModel('Welcome to Codemo!', 'text');
+export function initLocalEditorModel() {
+  const editorModel = makeEditorModel('local');
   return { type: INIT_LOCAL_EDITOR_MODEL, payload: editorModel };
 }
 

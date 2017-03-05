@@ -11,7 +11,7 @@ function publishStreamEditorContent(id) {
   });
 }
 
-function publishStreamEditorContentUsers(users) {
+function publishStreamEditorUsers(users) {
   if (!users) return this.ready();
 
   check(users, Array);
@@ -32,6 +32,6 @@ function publishAllStreams() {
 
 export {
   publishStreamEditorContent,
-  publishStreamEditorContentUsers,
+  publishStreamEditorUsers,
   publishAllStreams,
 };
